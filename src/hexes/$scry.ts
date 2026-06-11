@@ -1,5 +1,5 @@
-import type { SignalElement } from "../elements.d.ts";
 import { grimoire } from "../grimoire.ts";
+import { $bewitch } from "./$bewitch.ts";
 
 export const $INT_GRIMOIRE_SYMBOL = Symbol('$int');
 
@@ -12,12 +12,13 @@ export type $IntConfig = IntersectionObserverInit & {
 };
 
 export function $scry(
-	element: SignalElement,
+	element: HTMLElement,
 	{
 		callback,
 		...init
 	}: $IntConfig
 ): IntersectionObserver {
+	const signal = $bewitch(element);
 	const store = grimoire<$IntGrimoire>(element, $INT_GRIMOIRE_SYMBOL);
 
 	store.observers ??= new Set();
@@ -26,14 +27,14 @@ export function $scry(
 		...init,
 	});
 
-	if (element.signal?.aborted)
+	if (signal.aborted)
 		return observer;
 
 	store.observers.add(observer);
 
 	observer.observe(element);
 
-	element.signal?.addEventListener('abort', () => {
+	signal.addEventListener('abort', () => {
 		observer.disconnect();
 	});
 
