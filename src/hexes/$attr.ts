@@ -1,4 +1,4 @@
-import type { SignalElement } from "../elements.d.ts";
+import { $bewitch } from "./$bewitch.ts";
 import $mut from "./$mut.ts";
 import $prop from "./$prop.ts";
 
@@ -22,13 +22,15 @@ export type $AttrConfig<TValue extends $AttrValue> = {
 export function $attr<
 	TValue extends $AttrValue = string,
 >(
-	element: SignalElement,
+	element: HTMLElement,
 	{
 		name,
 		value,
 		callback,
 	}: $AttrConfig<TValue>
 ): TValue {
+	const signal = $bewitch(element);
+
 	const parseAttributeValue = (attrValue: string | null): TValue => {
 		if (attrValue === null)
 			return value;
@@ -70,7 +72,7 @@ export function $attr<
 				}
 			}
 
-			if (callback && !element.signal?.aborted) {
+			if (callback && !signal.aborted) {
 				callback.call(element, newValue, oldValue);
 			}
 		},
