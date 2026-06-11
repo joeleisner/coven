@@ -1,13 +1,12 @@
 import { defineConfig } from 'vite';
-
+import deno from '@deno/vite-plugin';
 import postcssMixins from 'postcss-mixins';
 
 export default defineConfig({
-  css: {
-    postcss: {
-      plugins: [
-        postcssMixins
-      ],
-    },
-  }
+	plugins: [deno()],
+	css: {
+		postcss: {
+			plugins: [postcssMixins],
+		},
+	},
 });
