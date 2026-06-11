@@ -8,24 +8,27 @@ type $BewitchGrimoire = {
 };
 
 /**
- * Casts Coven's spell on an element, binding an AbortSignal to it so any
+ * Casts Coven's spell on a node, binding an AbortSignal to it so any
  * hex applied later can register cleanup. Idempotent — a second call
  * returns the same signal.
  *
- * Pass an existing signal to adopt it (the element is bewitched but
+ * Pass an existing signal to adopt it (the node is bewitched but
  * $bewitch does not own the lifecycle). Without an argument, $bewitch
  * creates and owns an AbortController.
  *
- * @param element - The element to bewitch.
+ * Accepts any `Node` — elements, shadow roots, text nodes, etc. Most
+ * callers pass an `HTMLElement`, which still satisfies `Node`.
+ *
+ * @param node - The node to bewitch.
  * @param signal - Optional external signal to adopt.
- * @returns The element's signal.
+ * @returns The node's signal.
  */
 export function $bewitch(
-	element: HTMLElement,
+	node: Node,
 	signal?: AbortSignal,
 ): AbortSignal {
 	const store = grimoire<$BewitchGrimoire>(
-		element as GrimoireElement,
+		node as GrimoireElement,
 		$BEWITCH_GRIMOIRE_SYMBOL,
 	);
 	if (store.signal) return store.signal;
@@ -42,26 +45,26 @@ export function $bewitch(
 }
 
 /**
- * Returns the current signal bound to the element, or undefined if not
+ * Returns the current signal bound to the node, or undefined if not
  * yet bewitched. Read-only; does not trigger bewitching.
  *
- * @param element - The element to inspect.
- * @returns The element's signal, or undefined.
+ * @param node - The node to inspect.
+ * @returns The node's signal, or undefined.
  */
-$bewitch.signal = (element: HTMLElement): AbortSignal | undefined =>
+$bewitch.signal = (node: Node): AbortSignal | undefined =>
 	grimoire<$BewitchGrimoire>(
-		element as GrimoireElement,
+		node as GrimoireElement,
 		$BEWITCH_GRIMOIRE_SYMBOL,
 	).signal;
 
 /**
  * Aborts the controller owned by $bewitch. No-op for adopted signals.
  *
- * @param element - The element whose owned signal should be aborted.
+ * @param node - The node whose owned signal should be aborted.
  */
-$bewitch.abort = (element: HTMLElement): void => {
+$bewitch.abort = (node: Node): void => {
 	const store = grimoire<$BewitchGrimoire>(
-		element as GrimoireElement,
+		node as GrimoireElement,
 		$BEWITCH_GRIMOIRE_SYMBOL,
 	);
 	store.controller?.abort();
@@ -71,18 +74,18 @@ $bewitch.abort = (element: HTMLElement): void => {
  * Aborts the current owned controller (if any) and creates a fresh
  * one. Returns the new signal. Used by Familiar on reconnection.
  *
- * Note: calling `.renew` on an element that was bewitched with an
+ * Note: calling `.renew` on a node that was bewitched with an
  * *adopted* external signal will replace it with a freshly-owned
  * controller. The original external signal is left untouched but is
- * no longer the element's tracked signal — any hex registered after
+ * no longer the node's tracked signal — any hex registered after
  * the renew will live on the new owned signal, not the original one.
  *
- * @param element - The element to renew.
+ * @param node - The node to renew.
  * @returns The new signal.
  */
-$bewitch.renew = (element: HTMLElement): AbortSignal => {
+$bewitch.renew = (node: Node): AbortSignal => {
 	const store = grimoire<$BewitchGrimoire>(
-		element as GrimoireElement,
+		node as GrimoireElement,
 		$BEWITCH_GRIMOIRE_SYMBOL,
 	);
 	store.controller?.abort();

@@ -8,7 +8,7 @@ type GrimoireCarrier = {
 	[GRIMOIRE_SYMBOL]?: Grimoire;
 };
 
-export type GrimoireElement = HTMLElement & GrimoireCarrier;
+export type GrimoireElement = Node & GrimoireCarrier;
 
 function readSlot<TInterface extends Record<string, unknown>>(
 	carrier: GrimoireCarrier,
