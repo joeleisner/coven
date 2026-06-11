@@ -1,4 +1,4 @@
-import { grimoire } from "../grimoire.ts";
+import { grimoire, type GrimoireElement } from "../grimoire.ts";
 import { $bewitch } from "./$bewitch.ts";
 
 export type $MutValueMap = {
@@ -25,7 +25,7 @@ export type $MutGrimoire = {
 		[TType in keyof $MutValueMap]?: Set<$MutCallbacks[TType]>;
 	};
 }
-	
+
 export type $MutConfig<
 	TType extends keyof $MutValueMap = keyof $MutValueMap,
 > = {
@@ -34,30 +34,52 @@ export type $MutConfig<
 	subtree?: boolean;
 };
 
+/**
+ * Subscribes to mutations on a node via a shared `MutationObserver`.
+ *
+ * The first argument is the node to observe — it can be any `Node`,
+ * including an `HTMLElement`, a `ShadowRoot`, a text node, or any other
+ * DOM node a `MutationObserver` is allowed to watch. The `type` field
+ * of the config selects which `MutationObserverInit` flag is set
+ * (`attributes` | `childList` | `characterData`); `subtree` is forwarded
+ * through.
+ *
+ * Repeat calls for the same node share the underlying observer; multiple
+ * callbacks for the same `type` are all invoked. Cleanup is bound to the
+ * node's `$bewitch` signal, so aborting the signal disconnects the
+ * observer.
+ *
+ * @param node - The node to observe.
+ * @param config - The mutation type, callback, and `subtree` flag.
+ * @returns The shared `MutationObserver` for this node.
+ */
 export function $mut(
-	element: HTMLElement,
+	node: Node,
 	config: $MutConfig<'attributes'>
 ): MutationObserver;
 export function $mut(
-	element: HTMLElement,
+	node: Node,
 	config: $MutConfig<'childList'>
 ): MutationObserver;
 export function $mut(
-	element: HTMLElement,
+	node: Node,
 	config: $MutConfig<'characterData'>
 ): MutationObserver;
 export function $mut<
 	TType extends keyof $MutValueMap,
 >(
-	element: HTMLElement,
+	node: Node,
 	{
 		type,
 		callback,
 		subtree = false,
 	}: $MutConfig<TType>
 ): MutationObserver {
-	const signal = $bewitch(element);
-	const store = grimoire<$MutGrimoire>(element, $MUT_GRIMOIRE_SYMBOL);
+	const signal = $bewitch(node);
+	const store = grimoire<$MutGrimoire>(
+		node as GrimoireElement,
+		$MUT_GRIMOIRE_SYMBOL,
+	);
 
 	store.listeners ??= {};
 	(store.listeners[type] as Set<$MutCallbacks[TType]>) ??= new Set();
@@ -73,7 +95,8 @@ export function $mut<
 					if (!callbacks || !callbacks.size) break;
 
 					const attrName = mutation.attributeName!;
-					const newValue = element.getAttribute(attrName);
+					const target = mutation.target as Element;
+					const newValue = target.getAttribute(attrName);
 					const oldValue = mutation.oldValue;
 					callbacks.forEach(
 						cb => cb(attrName, newValue, oldValue)
@@ -84,7 +107,7 @@ export function $mut<
 					const callbacks = store.listeners?.childList;
 					if (!callbacks || !callbacks.size) break;
 
-					callbacks.forEach(cb => cb(element.childNodes));
+					callbacks.forEach(cb => cb(node.childNodes));
 					break;
 				}
 				case 'characterData': {
@@ -100,7 +123,7 @@ export function $mut<
 
 	const observer = new MutationObserver(onChange);
 
-	observer.observe(element, {
+	observer.observe(node, {
 		attributes: type === 'attributes',
 		childList: type === 'childList',
 		characterData: type === 'characterData',
