@@ -1,5 +1,5 @@
 import { $assert } from "../charms/$assert.ts";
-import { grimoire } from "../mod.ts";
+import { grimoire, type GrimoireElement } from "../grimoire.ts";
 import { $bewitch } from "./$bewitch.ts";
 
 export type $PropCallback<TValue = unknown> = (newValue: TValue, oldValue: TValue) => void;
@@ -73,5 +73,31 @@ export function $prop<
 
 	return entry.value as TValue;
 }
+
+/**
+ * Returns the names of every property bound to the element via $prop.
+ */
+$prop.list = (element: HTMLElement): string[] => {
+	const store = grimoire<$PropGrimoire>(
+		element as GrimoireElement,
+		$PROP_GRIMOIRE_SYMBOL,
+	);
+	return Object.keys(store.props ?? {});
+};
+
+/**
+ * Returns whether the named property was defined as readonly, or
+ * undefined if no such property exists.
+ */
+$prop.readonly = (
+	element: HTMLElement,
+	name: string,
+): boolean | undefined => {
+	const store = grimoire<$PropGrimoire>(
+		element as GrimoireElement,
+		$PROP_GRIMOIRE_SYMBOL,
+	);
+	return store.props?.[name]?.readonly;
+};
 
 export default $prop;
