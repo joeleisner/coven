@@ -1,6 +1,10 @@
+import { grimoire, type GrimoireElement } from "../grimoire.ts";
 import { $bewitch } from "./$bewitch.ts";
 import $mut from "./$mut.ts";
 import $prop from "./$prop.ts";
+
+const $ATTR_GRIMOIRE_SYMBOL = Symbol('$attr');
+type $AttrGrimoire = { names?: Set<string> };
 
 export type $AttrValue = string | number | boolean;
 
@@ -30,6 +34,13 @@ export function $attr<
 	}: $AttrConfig<TValue>
 ): TValue {
 	const signal = $bewitch(element);
+
+	const store = grimoire<$AttrGrimoire>(
+		element as GrimoireElement,
+		$ATTR_GRIMOIRE_SYMBOL,
+	);
+	store.names ??= new Set();
+	store.names.add(name);
 
 	const parseAttributeValue = (attrValue: string | null): TValue => {
 		if (attrValue === null)
@@ -99,5 +110,15 @@ export function $attr<
 
 	return initialValue;
 }
+
+/**
+ * Returns the names of every attribute bound to the element via $attr.
+ */
+$attr.list = (element: HTMLElement): string[] => [
+	...(grimoire<$AttrGrimoire>(
+		element as GrimoireElement,
+		$ATTR_GRIMOIRE_SYMBOL,
+	).names ?? new Set<string>()),
+];
 
 export default $attr;
