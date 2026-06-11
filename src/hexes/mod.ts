@@ -1,7 +1,7 @@
-export { $attr } from './$attr';
-export { $emit } from './$emit';
-export { $scry } from './$scry';
-export { $mut } from './$mut';
-export { $on } from './$on';
-export { $prop } from './$prop';
-export { $shdw } from './$shdw';
+export { $attr } from './$attr.ts';
+export { $emit } from './$emit.ts';
+export { $scry } from './$scry.ts';
+export { $mut } from './$mut.ts';
+export { $on } from './$on.ts';
+export { $prop } from './$prop.ts';
+export { $shdw } from './$shdw.ts';

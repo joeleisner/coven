@@ -1,6 +1,6 @@
-import type { SignalElement } from "../elements";
-import $mut from "./$mut";
-import $prop from "./$prop";
+import type { SignalElement } from "../elements.d.ts";
+import $mut from "./$mut.ts";
+import $prop from "./$prop.ts";
 
 export type $AttrValue = string | number | boolean;
 

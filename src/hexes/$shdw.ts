@@ -1,4 +1,4 @@
-import { $template } from "../charms/$template";
+import { $template } from "../charms/$template.ts";
 
 /**
  * Attaches a shadow DOM to the given component if it doesn't already exist, and populates it with the content of the provided template.

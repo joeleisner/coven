@@ -1,5 +1,5 @@
-import type { SignalElement } from "../elements";
-import { grimoire } from "../grimoire";
+import type { SignalElement } from "../elements.d.ts";
+import { grimoire } from "../grimoire.ts";
 
 export const $INT_GRIMOIRE_SYMBOL = Symbol('$int');
 

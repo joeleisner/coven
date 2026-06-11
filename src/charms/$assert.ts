@@ -1,4 +1,4 @@
-import { $error } from "./$error";
+import { $error } from "./$error.ts";
 
 export function $assert(
 	element: HTMLElement,

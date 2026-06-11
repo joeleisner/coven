@@ -1,6 +1,6 @@
-import { $assert } from "../charms/$assert";
-import type { SignalElement } from "../elements";
-import { grimoire } from "../mod";
+import { $assert } from "../charms/$assert.ts";
+import type { SignalElement } from "../elements.d.ts";
+import { grimoire } from "../mod.ts";
 
 export type $PropCallback<TValue = unknown> = (newValue: TValue, oldValue: TValue) => void;
 

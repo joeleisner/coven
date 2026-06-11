@@ -1,4 +1,4 @@
-import type { SignalElement } from "../elements";
+import type { SignalElement } from "../elements.d.ts";
 
 export type $OnOptions<
 	TDetail extends unknown | never = never,

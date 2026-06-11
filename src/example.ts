@@ -1,2 +1,2 @@
 import './example.css';
-import './_examples/ssd';
+import './_examples/ssd.ts';

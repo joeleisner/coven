@@ -9,7 +9,7 @@ import {
 	$shdw,
 	grimoire,
 	$scry,
-} from '../mod';
+} from '../mod.ts';
 
 const namespace = 'wcpg-ssd';
 
