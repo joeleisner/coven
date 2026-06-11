@@ -1,4 +1,4 @@
-import { $template } from "../charms/$template.ts";
+import { $template } from "./$template.ts";
 
 /**
  * Attaches a shadow DOM to the given component if it doesn't already exist, and populates it with the content of the provided template.
@@ -12,7 +12,7 @@ export function $shdw(
 	html?: HTMLTemplateElement | string
 ): ShadowRoot {
 	if (typeof html === 'string')
-		html = $template(html);
+		html = $template(component, html);
 
 	if (!component.shadowRoot) {
 		component.attachShadow({ mode: 'open' });

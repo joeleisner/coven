@@ -4,3 +4,4 @@ export { $mut } from './$mut.ts';
 export { $prop } from './$prop.ts';
 export { $scry } from './$scry.ts';
 export { $shdw } from './$shdw.ts';
+export { $template } from './$template.ts';
