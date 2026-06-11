@@ -34,31 +34,36 @@ export function $shdw(
 ): ShadowRoot {
 	if (typeof html === 'string') html = $template(component, html);
 
-	if (!component.shadowRoot) {
+	const store = grimoire<$ShdwGrimoire>(
+		component as GrimoireElement,
+		$SHDW_GRIMOIRE_SYMBOL,
+	);
+	store.parts ??= new Set();
+
+	const firstCall = !component.shadowRoot;
+
+	if (firstCall) {
 		component.attachShadow({ mode: 'open' });
 		if (html) {
 			component.shadowRoot!.appendChild(html.content.cloneNode(true));
 		}
 	}
 
-	const store = grimoire<$ShdwGrimoire>(
-		component as GrimoireElement,
-		$SHDW_GRIMOIRE_SYMBOL,
-	);
-	store.parts ??= new Set();
 	collectParts(component.shadowRoot!, store.parts);
 
-	// Stay in sync with late-added [part] values inside the shadow.
-	$mut(component.shadowRoot!, {
-		type: 'childList',
-		subtree: true,
-		callback: () => {
-			collectParts(component.shadowRoot!, store.parts!);
-			propagate(component);
-		},
-	});
+	if (firstCall) {
+		// Stay in sync with late-added [part] values inside the shadow.
+		$mut(component.shadowRoot!, {
+			type: 'childList',
+			subtree: true,
+			callback: () => {
+				collectParts(component.shadowRoot!, store.parts!);
+				propagate(component);
+			},
+		});
 
-	queueMicrotask(() => propagate(component));
+		queueMicrotask(() => propagate(component));
+	}
 
 	return component.shadowRoot!;
 }
