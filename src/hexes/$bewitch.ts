@@ -68,8 +68,14 @@ $bewitch.abort = (element: HTMLElement): void => {
 };
 
 /**
- * Aborts the current owned controller and creates a fresh one. Returns
- * the new signal. Used by Familiar on reconnection.
+ * Aborts the current owned controller (if any) and creates a fresh
+ * one. Returns the new signal. Used by Familiar on reconnection.
+ *
+ * Note: calling `.renew` on an element that was bewitched with an
+ * *adopted* external signal will replace it with a freshly-owned
+ * controller. The original external signal is left untouched but is
+ * no longer the element's tracked signal — any hex registered after
+ * the renew will live on the new owned signal, not the original one.
  *
  * @param element - The element to renew.
  * @returns The new signal.

@@ -78,3 +78,25 @@ test('passing a new external signal after bewitching does not replace the origin
 	const second = $bewitch(el, ctrl.signal);
 	assertStrictEquals(second, first, 'idempotent: first signal wins');
 });
+
+test('$bewitch(el) then $bewitch(el, externalSignal) keeps the owned signal', () => {
+	const el = document.createElement('div');
+	const first = $bewitch(el);
+	const ctrl = new AbortController();
+	const second = $bewitch(el, ctrl.signal);
+	assertStrictEquals(second, first, 'idempotent: first signal wins (owned then external)');
+	assertNotStrictEquals(second, ctrl.signal);
+});
+
+test('$bewitch.renew converts an adopted bewitch into an owned one', () => {
+	const el = document.createElement('div');
+	const ctrl = new AbortController();
+	const adopted = $bewitch(el, ctrl.signal);
+	const renewed = $bewitch.renew(el);
+	assertNotStrictEquals(renewed, adopted, 'renew produces a fresh signal');
+	assert(!renewed.aborted, 'new signal is live');
+	assert(!ctrl.signal.aborted, 'original external controller is not aborted');
+	// And $bewitch.abort should now work because we own it.
+	$bewitch.abort(el);
+	assert(renewed.aborted, 'newly-owned signal aborts on $bewitch.abort');
+});
