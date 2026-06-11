@@ -67,3 +67,13 @@ test('reconnect renews the signal', async () => {
 	assert(!el.signal.aborted);
 	el.remove();
 });
+
+import { $bewitch } from './hexes/$bewitch.ts';
+
+test('Familiar bewitches itself in the constructor', () => {
+	class T extends Familiar {}
+	const name = tagName();
+	customElements.define(name, T);
+	const el = document.createElement(name) as T;
+	assertEquals(el.signal, $bewitch.signal(el));
+});

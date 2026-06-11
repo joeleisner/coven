@@ -1,54 +1,51 @@
-export abstract class Familiar extends HTMLElement {
-	#controller: AbortController;
+import { $bewitch } from './hexes/$bewitch.ts';
 
+/**
+ * Coven's canonical custom-element base class. Owns lifecycle hooks
+ * (setup / connected / disconnected) and exposes an AbortSignal that
+ * hexes use for cleanup. The signal is managed by $bewitch — the same
+ * mechanism that powers any bring-your-own web component.
+ */
+export abstract class Familiar extends HTMLElement {
 	setup?(signal: AbortSignal): void;
 	connected?(signal: AbortSignal): void;
 	disconnected?(): void;
 
 	constructor() {
 		super();
-		this.#controller = new AbortController();
-		if (typeof this.setup === 'function') {
-			this.setup(this.#controller.signal);
-		}	
+		$bewitch(this);
+		this.setup?.(this.signal);
 	}
 
 	get signal(): AbortSignal {
-		return this.#controller.signal;
+		return $bewitch.signal(this)!;
 	}
 
 	connectedCallback(): void {
-		if (this.#controller.signal.aborted) {
-			this.#controller = new AbortController();
-		}
+		if (this.signal.aborted) $bewitch.renew(this);
 
 		const connect = () => {
-			if (typeof this.connected === 'function') {
-				this.connected(this.signal);
-			}
-			if (typeof this.disconnected === 'function')
+			this.connected?.(this.signal);
+			if (typeof this.disconnected === 'function') {
 				this.signal.addEventListener(
 					'abort',
 					() => this.disconnected!(),
-					{ once: true }
+					{ once: true },
 				);
+			}
 		};
 
 		if (document.readyState !== 'loading') {
 			connect();
 		} else {
-			document.addEventListener(
-				'DOMContentLoaded',
-				() => connect(),
-				{
-					once: true,
-					signal: this.signal,
-				}
-			);
+			document.addEventListener('DOMContentLoaded', connect, {
+				once: true,
+				signal: this.signal,
+			});
 		}
 	}
 
 	disconnectedCallback(): void {
-		this.#controller.abort();
+		$bewitch.abort(this);
 	}
-};
+}
