@@ -16,7 +16,7 @@
 		"dev": "deno run -A --node-modules-dir npm:vite@^7",
 		"build": "deno run -A --node-modules-dir npm:vite@^7 build",
 		"preview": "deno run -A --node-modules-dir npm:vite@^7 preview",
-		"test": "deno test --allow-env --allow-read --doc",
+		"test": "deno test --allow-env --allow-read --doc src",
 		"check": "deno check src",
 		"fmt": "deno fmt",
 		"lint": "deno lint",
