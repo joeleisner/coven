@@ -43,3 +43,43 @@ Deno.test('different elements have isolated grimoires', () => {
 	assertEquals(grimoire<{ v?: number }>(a, SLOT_A).v, 1);
 	assertEquals(grimoire<{ v?: number }>(b, SLOT_A).v, 2);
 });
+
+const SHARED_SLOT = Symbol('shared');
+
+class MyA extends HTMLElement {}
+class MyB extends HTMLElement {}
+customElements.define('coven-test-a', MyA);
+customElements.define('coven-test-b', MyB);
+
+Deno.test('grimoire.shared(element, type) stores on the constructor', () => {
+	const a1 = document.createElement('coven-test-a') as MyA as GrimoireElement;
+	const a2 = document.createElement('coven-test-a') as MyA as GrimoireElement;
+	const slot = grimoire.shared<{ value?: number }>(a1, SHARED_SLOT);
+	slot.value = 99;
+	assertEquals(
+		grimoire.shared<{ value?: number }>(a2, SHARED_SLOT).value,
+		99,
+		'instances of the same class share the shared slot',
+	);
+});
+
+Deno.test('grimoire.shared is isolated between classes', () => {
+	const a = document.createElement('coven-test-a') as MyA as GrimoireElement;
+	const b = document.createElement('coven-test-b') as MyB as GrimoireElement;
+	const slotA = grimoire.shared<{ x?: string }>(a, SHARED_SLOT);
+	const slotB = grimoire.shared<{ x?: string }>(b, SHARED_SLOT);
+	slotA.x = 'A-class';
+	slotB.x = 'B-class';
+	assertEquals(grimoire.shared<{ x?: string }>(a, SHARED_SLOT).x, 'A-class');
+	assertEquals(grimoire.shared<{ x?: string }>(b, SHARED_SLOT).x, 'B-class');
+});
+
+Deno.test('grimoire and grimoire.shared do not collide on the same symbol', () => {
+	const el = document.createElement('coven-test-a') as MyA as GrimoireElement;
+	const inst = grimoire<{ scope?: string }>(el, SHARED_SLOT);
+	const shared = grimoire.shared<{ scope?: string }>(el, SHARED_SLOT);
+	inst.scope = 'instance';
+	shared.scope = 'class';
+	assertEquals(grimoire<{ scope?: string }>(el, SHARED_SLOT).scope, 'instance');
+	assertEquals(grimoire.shared<{ scope?: string }>(el, SHARED_SLOT).scope, 'class');
+});
