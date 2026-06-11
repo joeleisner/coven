@@ -1,4 +1,4 @@
-import type { SignalElement } from "../elements.d.ts";
+import { $bewitch } from "./$bewitch.ts";
 
 export type $OnOptions<
 	TDetail extends unknown | never = never,
@@ -13,16 +13,17 @@ export function $on<
 	TDetail extends unknown | never = never,
 	TEvent = [TDetail] extends [never] ? Event : CustomEvent<TDetail>
 >(
-	element: SignalElement,
+	element: HTMLElement,
 	{
 		type,
 		callback,
 		target = document,
 	}: $OnOptions<TDetail, TEvent>
 ): void {
+	const signal = $bewitch(element);
 	target.addEventListener(
 		type,
 		callback as EventListenerOrEventListenerObject,
-		{ signal: element?.signal },
+		{ signal },
 	);
 }
