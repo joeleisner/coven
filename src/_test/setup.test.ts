@@ -1,7 +1,7 @@
-import './setup.ts';
+import { test } from './setup.ts';
 import { assert, assertEquals } from '@std/assert';
 
-Deno.test('happy-dom is installed on globalThis', () => {
+test('happy-dom is installed on globalThis', () => {
 	assert(typeof HTMLElement === 'function');
 	assert(typeof customElements === 'object');
 	assert(typeof MutationObserver === 'function');
