@@ -44,3 +44,31 @@ test('$shdw collects late-added [part] values via internal $mut', async () => {
 	const parts = $shdw.parts(el)!;
 	assert(parts.has('late'), `expected 'late' in ${[...parts].join(',')}`);
 });
+
+test('$shdw auto-sets exportparts on a child host nested inside a parent shadow', async () => {
+	const host = document.createElement('div');
+	$shdw(host, '<slot></slot>');
+
+	const child = document.createElement('div');
+	$shdw(child, '<i part="inner"></i>');
+	host.shadowRoot!.appendChild(child);
+
+	await new Promise((r) => setTimeout(r, 0));
+
+	const exported = child.getAttribute('exportparts') ?? '';
+	assert(exported.includes('inner'), `exportparts="${exported}"`);
+});
+
+test('$shdw.propagate(element) manually triggers propagation', () => {
+	const host = document.createElement('div');
+	$shdw(host, '<slot></slot>');
+
+	const child = document.createElement('div');
+	$shdw(child, '<i part="manual"></i>');
+	host.shadowRoot!.appendChild(child);
+	child.removeAttribute('exportparts');
+
+	$shdw.propagate(child);
+	const exported = child.getAttribute('exportparts') ?? '';
+	assert(exported.includes('manual'), `exportparts="${exported}"`);
+});

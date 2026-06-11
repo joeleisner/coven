@@ -54,8 +54,11 @@ export function $shdw(
 		subtree: true,
 		callback: () => {
 			collectParts(component.shadowRoot!, store.parts!);
+			propagate(component);
 		},
 	});
+
+	queueMicrotask(() => propagate(component));
 
 	return component.shadowRoot!;
 }
@@ -80,5 +83,37 @@ $shdw.parts = (element: HTMLElement): ReadonlySet<string> | undefined =>
  */
 $shdw.root = (element: HTMLElement): ShadowRoot | null =>
 	element.shadowRoot;
+
+/**
+ * Re-run exportparts propagation manually. Useful when shadow
+ * contents change outside the internal $mut subscription's view.
+ *
+ * @param element - The host element whose parts should be merged into its parent shadow host.
+ */
+$shdw.propagate = (element: HTMLElement): void => propagate(element);
+
+function propagate(element: HTMLElement): void {
+	const parts = grimoire<$ShdwGrimoire>(
+		element as GrimoireElement,
+		$SHDW_GRIMOIRE_SYMBOL,
+	).parts;
+	if (!parts || !parts.size) return;
+
+	// Walk up to find the enclosing root. We avoid getRootNode() because
+	// some DOM implementations (e.g. happy-dom) don't traverse the
+	// parentNode chain through shadow boundaries the way the spec requires.
+	let node: Node | null = element.parentNode;
+	while (node && !(node instanceof ShadowRoot)) {
+		node = node.parentNode;
+	}
+	if (!node) return;
+
+	const existing = (element.getAttribute('exportparts') ?? '')
+		.split(',')
+		.map((s) => s.trim())
+		.filter(Boolean);
+	const merged = new Set<string>([...existing, ...parts]);
+	element.setAttribute('exportparts', [...merged].join(', '));
+}
 
 export default $shdw;
