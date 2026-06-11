@@ -1,6 +1,6 @@
 import { $assert } from "../charms/$assert.ts";
-import type { SignalElement } from "../elements.d.ts";
 import { grimoire } from "../mod.ts";
+import { $bewitch } from "./$bewitch.ts";
 
 export type $PropCallback<TValue = unknown> = (newValue: TValue, oldValue: TValue) => void;
 
@@ -26,7 +26,7 @@ export type $PropConfig<TValue = unknown> = {
 export function $prop<
 	TValue = unknown,
 >(
-	element: SignalElement,
+	element: HTMLElement,
 	{
 		name,
 		value: defaultValue,
@@ -34,6 +34,7 @@ export function $prop<
 		readonly,
 	}: $PropConfig<TValue>
 ): TValue {
+	const signal = $bewitch(element);
 	const store = grimoire<$PropGrimoire>(element, $PROP_GRIMOIRE_SYMBOL);
 
 	store.props ??= {};
@@ -66,7 +67,7 @@ export function $prop<
 		}
 	});
 
-	element.signal?.addEventListener('abort', () => {
+	signal.addEventListener('abort', () => {
 		delete store.props?.[name];
 	});
 
