@@ -1,5 +1,5 @@
-import type { SignalElement } from "../elements.d.ts";
 import { grimoire } from "../grimoire.ts";
+import { $bewitch } from "./$bewitch.ts";
 
 export type $MutValueMap = {
 	attributes: string | null;
@@ -35,27 +35,28 @@ export type $MutConfig<
 };
 
 export function $mut(
-	element: SignalElement,
+	element: HTMLElement,
 	config: $MutConfig<'attributes'>
 ): MutationObserver;
 export function $mut(
-	element: SignalElement,
+	element: HTMLElement,
 	config: $MutConfig<'childList'>
 ): MutationObserver;
 export function $mut(
-	element: SignalElement,
+	element: HTMLElement,
 	config: $MutConfig<'characterData'>
 ): MutationObserver;
 export function $mut<
 	TType extends keyof $MutValueMap,
 >(
-	element: SignalElement,
+	element: HTMLElement,
 	{
 		type,
 		callback,
 		subtree = false,
 	}: $MutConfig<TType>
 ): MutationObserver {
+	const signal = $bewitch(element);
 	const store = grimoire<$MutGrimoire>(element, $MUT_GRIMOIRE_SYMBOL);
 
 	store.listeners ??= {};
@@ -108,7 +109,7 @@ export function $mut<
 		characterDataOldValue: type === 'characterData',
 	});
 
-	element.signal?.addEventListener('abort', () => {
+	signal.addEventListener('abort', () => {
 		if (store.listeners) delete store.listeners[type];
 		observer.disconnect();
 		store.observer = undefined;
