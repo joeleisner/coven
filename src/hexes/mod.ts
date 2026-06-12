@@ -5,4 +5,5 @@ export { $on } from './$on.ts';
 export { $prop } from './$prop.ts';
 export { $scry } from './$scry.ts';
 export { $shdw } from './$shdw.ts';
+export { $soul } from './$soul.ts';
 export { $template } from './$template.ts';
