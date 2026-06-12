@@ -5,7 +5,6 @@
     "jsr:@std/internal@^1.0.12": "1.0.13",
     "npm:@deno/vite-plugin@1": "1.0.6_vite@7.3.3",
     "npm:happy-dom@15": "15.11.7",
-    "npm:postcss-mixins@12": "12.1.2_postcss@8.5.14",
     "npm:vite@7": "7.3.3"
   },
   "jsr": {
@@ -284,9 +283,6 @@
     "@types/estree@1.0.9": {
       "integrity": "sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg=="
     },
-    "camelcase-css@2.0.1": {
-      "integrity": "sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA=="
-    },
     "entities@4.5.0": {
       "integrity": "sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw=="
     },
@@ -355,29 +351,6 @@
     "picomatch@4.0.4": {
       "integrity": "sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A=="
     },
-    "postcss-js@4.1.0_postcss@8.5.14": {
-      "integrity": "sha512-oIAOTqgIo7q2EOwbhb8UalYePMvYoIeRY2YKntdpFQXNosSu3vLrniGgmH9OKs/qAkfoj5oB3le/7mINW1LCfw==",
-      "dependencies": [
-        "camelcase-css",
-        "postcss"
-      ]
-    },
-    "postcss-mixins@12.1.2_postcss@8.5.14": {
-      "integrity": "sha512-90pSxmZVfbX9e5xCv7tI5RV1mnjdf16y89CJKbf/hD7GyOz1FCxcYMl8ZYA8Hc56dbApTKKmU9HfvgfWdCxlwg==",
-      "dependencies": [
-        "postcss",
-        "postcss-js",
-        "postcss-simple-vars",
-        "sugarss",
-        "tinyglobby"
-      ]
-    },
-    "postcss-simple-vars@7.0.1_postcss@8.5.14": {
-      "integrity": "sha512-5GLLXaS8qmzHMOjVxqkk1TZPf1jMqesiI7qLhnlyERalG0sMbHIbJqrcnrpmZdKCLglHnRHoEBB61RtGTsj++A==",
-      "dependencies": [
-        "postcss"
-      ]
-    },
     "postcss@8.5.14": {
       "integrity": "sha512-SoSL4+OSEtR99LHFZQiJLkT59C5B1amGO1NzTwj7TT1qCUgUO6hxOvzkOYxD+vMrXBM3XJIKzokoERdqQq/Zmg==",
       "dependencies": [
@@ -424,12 +397,6 @@
     "source-map-js@1.2.1": {
       "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="
     },
-    "sugarss@5.0.1_postcss@8.5.14": {
-      "integrity": "sha512-ctS5RYCBVvPoZAnzIaX5QSShK8ZiZxD5HUqSxlusvEMC+QZQIPCPOIJg6aceFX+K2rf4+SH89eu++h1Zmsr2nw==",
-      "dependencies": [
-        "postcss"
-      ]
-    },
     "tinyglobby@0.2.16": {
       "integrity": "sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==",
       "dependencies": [
@@ -464,7 +431,6 @@
       "jsr:@std/assert@1",
       "npm:@deno/vite-plugin@1",
       "npm:happy-dom@15",
-      "npm:postcss-mixins@12",
       "npm:vite@7"
     ]
   }
