@@ -1,9 +1,5 @@
 import { test } from './_test/setup.ts';
-import {
-	assert,
-	assertEquals,
-	assertNotStrictEquals,
-} from '@std/assert';
+import { assert, assertEquals, assertNotStrictEquals } from '@std/assert';
 import { Familiar } from './familiar.ts';
 
 let counter = 0;

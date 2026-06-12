@@ -7,7 +7,9 @@ test('$mut observes the given node when it is an element', async () => {
 	let fired = false;
 	$mut(el, {
 		type: 'childList',
-		callback: () => { fired = true; },
+		callback: () => {
+			fired = true;
+		},
 	});
 
 	el.appendChild(document.createElement('span'));

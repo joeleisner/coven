@@ -1,10 +1,5 @@
 import { test } from '../_test/setup.ts';
-import {
-	assert,
-	assertEquals,
-	assertNotStrictEquals,
-	assertStrictEquals,
-} from '@std/assert';
+import { assert, assertEquals, assertNotStrictEquals, assertStrictEquals } from '@std/assert';
 import { $bewitch } from './$bewitch.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 

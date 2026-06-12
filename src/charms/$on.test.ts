@@ -6,7 +6,12 @@ import { grimoire, type GrimoireElement } from '../grimoire.ts';
 test('$on binds a listener to the given element', () => {
 	const el = document.createElement('div');
 	let count = 0;
-	$on(el, { type: 'click', callback: () => { count++; } });
+	$on(el, {
+		type: 'click',
+		callback: () => {
+			count++;
+		},
+	});
 	el.dispatchEvent(new Event('click'));
 	assertEquals(count, 1);
 });

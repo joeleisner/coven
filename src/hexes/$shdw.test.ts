@@ -18,10 +18,13 @@ test('$shdw is idempotent on the same element', () => {
 
 test('$shdw.parts(element) returns tracked [part] values', () => {
 	const el = document.createElement('div');
-	$shdw(el, `
+	$shdw(
+		el,
+		`
 		<div part="header"></div>
 		<div part="body footer"></div>
-	`);
+	`,
+	);
 	const parts = $shdw.parts(el)!;
 	assert(parts.has('header'));
 	assert(parts.has('body'));

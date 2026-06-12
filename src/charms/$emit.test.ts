@@ -7,7 +7,9 @@ test('$emit dispatches an event named for the tag', () => {
 	customElements.define('coven-emit-1', T);
 	const el = document.createElement('coven-emit-1');
 	let type = '';
-	el.addEventListener('coven-emit-1', (e) => { type = e.type; });
+	el.addEventListener('coven-emit-1', (e) => {
+		type = e.type;
+	});
 	$emit(el);
 	assertEquals(type, 'coven-emit-1');
 });

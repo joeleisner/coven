@@ -20,7 +20,10 @@ test('$scry.disconnect(element) disconnects all observers', () => {
 	const obs = $scry(el, { callback: () => {} });
 	let disconnected = false;
 	const orig = obs.disconnect.bind(obs);
-	obs.disconnect = () => { disconnected = true; orig(); };
+	obs.disconnect = () => {
+		disconnected = true;
+		orig();
+	};
 	$scry.disconnect(el);
 	assert(disconnected);
 	assertEquals($scry.observers(el)?.size, 0);

@@ -1,15 +1,6 @@
 import './ssd.css';
 
-import {
-	Familiar,
-	$attr,
-	$define,
-	$mut,
-	$prop,
-	$shdw,
-	grimoire,
-	$scry,
-} from '../mod.ts';
+import { $attr, $define, $mut, $prop, $scry, $shdw, Familiar, grimoire } from '../mod.ts';
 
 const namespace = 'wcpg-ssd';
 
@@ -33,13 +24,16 @@ class SSDDigit extends Familiar {
 
 	updateSegments(): void {
 		if (!this.segments) return;
-		
+
 		const segmentBits = SSDDigit.segmentMap.get(this.value) ?? 0;
 
 		this.segments.forEach((segment, index) => {
 			const isActive = (segmentBits & (1 << (6 - index))) !== 0;
 			if (isActive) {
-				segment.setAttribute('part', `segment segment-${String.fromCharCode(97 + index)} segment-active`);
+				segment.setAttribute(
+					'part',
+					`segment segment-${String.fromCharCode(97 + index)} segment-active`,
+				);
 			} else {
 				segment.setAttribute('part', `segment segment-${String.fromCharCode(97 + index)}`);
 			}
@@ -47,7 +41,9 @@ class SSDDigit extends Familiar {
 	}
 
 	setup(): void {
-		const shadow = $shdw(this, /*html*/`
+		const shadow = $shdw(
+			this,
+			/*html*/ `
 			<span part="digit-value"><slot></slot></span>
 			<div part="segment segment-a"></div>
 			<div part="segment segment-b"></div>
@@ -56,7 +52,8 @@ class SSDDigit extends Familiar {
 			<div part="segment segment-e"></div>
 			<div part="segment segment-f"></div>
 			<div part="segment segment-g"></div>
-		`);
+		`,
+		);
 		$prop(this, {
 			name: 'segments',
 			value: shadow.querySelectorAll<HTMLDivElement>('div[part^="segment"]'),
@@ -77,89 +74,104 @@ class SSDDigit extends Familiar {
 
 $define(`${namespace}-digit`, SSDDigit);
 
-$define(namespace, class SSD extends Familiar {
-	digits: SSDDigit[] = [];
+$define(
+	namespace,
+	class SSD extends Familiar {
+		digits: SSDDigit[] = [];
 
-	updateDisplay(text: string | null = null): void {
-		if (!this.shadowRoot) return;
+		updateDisplay(text: string | null = null): void {
+			if (!this.shadowRoot) return;
 
-		if (!text) {
-			return this.digits.forEach(digit => digit.remove());
+			if (!text) {
+				return this.digits.forEach((digit) => digit.remove());
+			}
+
+			this.digits = Array.from($shdw(this).querySelectorAll<SSDDigit>(`${namespace}-digit`));
+
+			let diff = text.length - this.digits.length;
+
+			while (diff < 0) {
+				this.digits.at(-1)?.remove();
+				this.digits.pop();
+				diff++;
+			}
+
+			while (diff > 0) {
+				const digitElement = document.createElement(`${namespace}-digit`) as SSDDigit;
+				digitElement.setAttribute(
+					'exportparts',
+					'segment, segment-active, segment-a, segment-b, segment-c, segment-d, segment-e, segment-f, segment-g',
+				);
+				digitElement.part.add('digit');
+				$shdw(this).appendChild(digitElement);
+				this.digits.push(digitElement);
+				digitElement.value = ' ';
+				diff--;
+			}
+
+			this.digits.forEach((digit, index) => {
+				digit.value = text[index] ?? ' ';
+			});
 		}
 
-		this.digits = Array.from($shdw(this).querySelectorAll<SSDDigit>(`${namespace}-digit`));
-	
-		let diff = text.length - this.digits.length;
-
-		while (diff < 0) {
-			this.digits.at(-1)?.remove();
-			this.digits.pop();
-			diff++;
-		}
-
-		while (diff > 0) {
-			const digitElement = document.createElement(`${namespace}-digit`) as SSDDigit;
-			digitElement.setAttribute('exportparts', 'segment, segment-active, segment-a, segment-b, segment-c, segment-d, segment-e, segment-f, segment-g');
-			digitElement.part.add('digit');
-			$shdw(this).appendChild(digitElement);
-			this.digits.push(digitElement);
-			digitElement.value = ' ';
-			diff--;
-		}
-
-		this.digits.forEach((digit, index) => {
-			digit.value = text[index] ?? ' ';
-		});
-	}
-
-	setup() {
-		$shdw(this, /*html*/`
+		setup() {
+			$shdw(
+				this,
+				/*html*/ `
 			<span part="display-value"><slot></slot></span>
-		`);
-	}
+		`,
+			);
+		}
 
-	connected() {
-		this.updateDisplay(this.textContent);
+		connected() {
+			this.updateDisplay(this.textContent);
 
-		$mut(this, {
-			type: 'characterData',
-			callback: this.updateDisplay.bind(this),
-			subtree: true,
-		});
-	}
+			$mut(this, {
+				type: 'characterData',
+				callback: this.updateDisplay.bind(this),
+				subtree: true,
+			});
+		}
 
-	disconnected() {
-		this.digits = [];
-	}
-});
+		disconnected() {
+			this.digits = [];
+		}
+	},
+);
 
-$define('wcpg-int-example', class IntExample extends Familiar {
-	intersected = false;
+$define(
+	'wcpg-int-example',
+	class IntExample extends Familiar {
+		intersected = false;
 
-	get text(): string {
-		return this.intersected ? 'Intersected' : 'Not intersected';
-	}
+		get text(): string {
+			return this.intersected ? 'Intersected' : 'Not intersected';
+		}
 
-	setup() {
-		// console.log('setup!');
-		$shdw(this, /*html*/`
+		setup() {
+			// console.log('setup!');
+			$shdw(
+				this,
+				/*html*/ `
 			<span part="value">${this.text}</span>
 			<slot></slot>
-		`);
-	}
+		`,
+			);
+		}
 
-	connected() {
-		$scry(this, {
-			callback: (entries, observer) => {
-				this.intersected = entries.some(entry => entry.isIntersecting);
-				if (this.intersected) {
-					$shdw(this).querySelector('span')!.textContent = this.text;
-					alert('Found me!');
-					observer.disconnect();
-				}
-			}
-		});
+		connected() {
+			$scry(this, {
+				callback: (entries, observer) => {
+					this.intersected = entries.some((entry) => entry.isIntersecting);
+					if (this.intersected) {
+						$shdw(this).querySelector('span')!.textContent = this.text;
+						alert('Found me!');
+						observer.disconnect();
+					}
+				},
+			});
 
-		console.log(grimoire(this));
-	}
-});
+			console.log(grimoire(this));
+		}
+	},
+);

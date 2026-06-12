@@ -27,7 +27,8 @@
 		"useTabs": true,
 		"singleQuote": true,
 		"semiColons": true,
-		"lineWidth": 100
+		"lineWidth": 100,
+		"exclude": ["docs/", "*.md"]
 	},
 	"compilerOptions": {
 		"lib": ["dom", "dom.iterable", "deno.ns"],

@@ -1,260 +1,288 @@
 @scope (wcpg-ssd-digit) {
-    :scope {
-        --digit-size: 30rem; 
-        --digit-height: var(--digit-size);
-        --digit-width: calc(var(--digit-height) / 2);
+	:scope {
+		--digit-size: 30rem;
+		--digit-height: var(--digit-size);
+		--digit-width: calc(var(--digit-height) / 2);
 
-        --thickness-ratio: 0.12; 
-        --gap-ratio: 0.02;       
+		--thickness-ratio: 0.12;
+		--gap-ratio: 0.02;
 
-        --segment-thickness: calc(var(--digit-width) * var(--thickness-ratio));
-        --digit-gap: calc(var(--digit-height) * var(--gap-ratio));
+		--segment-thickness: calc(var(--digit-width) * var(--thickness-ratio));
+		--digit-gap: calc(var(--digit-height) * var(--gap-ratio));
 
-        --segment-color: #220000; 
-        --segment-active-color: red;
+		--segment-color: #220000;
+		--segment-active-color: red;
 
-        display: grid;
-        position: relative;
-        width: var(--digit-width);
-        height: var(--digit-height);
-        gap: var(--digit-gap);
+		display: grid;
+		position: relative;
+		width: var(--digit-width);
+		height: var(--digit-height);
+		gap: var(--digit-gap);
 
-        /* 3 Columns: Left/Right are thickness, Middle takes the rest */
-        grid-template-columns: 
-            var(--segment-thickness) 
-            1fr 
-            var(--segment-thickness);
+		/* 3 Columns: Left/Right are thickness, Middle takes the rest */
+		grid-template-columns:
+			var(--segment-thickness)
+			1fr
+			var(--segment-thickness);
 
-        /* 5 Rows: 3 are thickness, 2 inner spaces split the remaining height */
-        grid-template-rows: 
-            var(--segment-thickness) 
-            1fr 
-            var(--segment-thickness) 
-            1fr 
-            var(--segment-thickness);
+		/* 5 Rows: 3 are thickness, 2 inner spaces split the remaining height */
+		grid-template-rows:
+			var(--segment-thickness)
+			1fr
+			var(--segment-thickness)
+			1fr
+			var(--segment-thickness);
 
-        grid-template-areas:
-            "a a a"
-            "f . b"
-            "g g g"
-            "e . c"
-            "d d d";
-    }
+		grid-template-areas:
+			'a a a'
+			'f . b'
+			'g g g'
+			'e . c'
+			'd d d';
+	}
 
-    /* Mapping */
-    &::part(segment-a) { grid-area: a; }
-    &::part(segment-b) { grid-area: b; }
-    &::part(segment-c) { grid-area: c; }
-    &::part(segment-d) { grid-area: d; }
-    &::part(segment-e) { grid-area: e; }
-    &::part(segment-f) { grid-area: f; }
-    &::part(segment-g) { grid-area: g; }
+	/* Mapping */
+	&::part(segment-a) {
+		grid-area: a;
+	}
+	&::part(segment-b) {
+		grid-area: b;
+	}
+	&::part(segment-c) {
+		grid-area: c;
+	}
+	&::part(segment-d) {
+		grid-area: d;
+	}
+	&::part(segment-e) {
+		grid-area: e;
+	}
+	&::part(segment-f) {
+		grid-area: f;
+	}
+	&::part(segment-g) {
+		grid-area: g;
+	}
 
-    /* SEGMENT A & D: Pointy on the inner bottom/top corners */
-    &::part(segment-a) {
-        clip-path: polygon(
-            0% 0%, 
-            100% 0%, 
-            calc(100% - var(--segment-thickness)) 100%, 
-            var(--segment-thickness) 100%
-        );
-    }
-    &::part(segment-d) {
-        clip-path: polygon(
-            var(--segment-thickness) 0%, 
-            calc(100% - var(--segment-thickness)) 0%, 
-            100% 100%, 
-            0% 100%
-        );
-    }
+	/* SEGMENT A & D: Pointy on the inner bottom/top corners */
+	&::part(segment-a) {
+		clip-path: polygon(
+			0% 0%,
+			100% 0%,
+			calc(100% - var(--segment-thickness)) 100%,
+			var(--segment-thickness) 100%
+		);
+	}
+	&::part(segment-d) {
+		clip-path: polygon(
+			var(--segment-thickness) 0%,
+			calc(100% - var(--segment-thickness)) 0%,
+			100% 100%,
+			0% 100%
+		);
+	}
 
-    /* SEGMENT G (Middle): Double trapezoid pointing outward left/right */
-    &::part(segment-g) {
-        clip-path: polygon(
-            0% 50%, 
-            var(--segment-thickness) 0%, 
-            calc(100% - var(--segment-thickness)) 0%, 
-            100% 50%, 
-            calc(100% - var(--segment-thickness)) 100%, 
-            var(--segment-thickness) 100%
-        );
-    }
+	/* SEGMENT G (Middle): Double trapezoid pointing outward left/right */
+	&::part(segment-g) {
+		clip-path: polygon(
+			0% 50%,
+			var(--segment-thickness) 0%,
+			calc(100% - var(--segment-thickness)) 0%,
+			100% 50%,
+			calc(100% - var(--segment-thickness)) 100%,
+			var(--segment-thickness) 100%
+		);
+	}
 
-    /* VERTICAL SEGMENTS (B, C, E, F): Outer side is flat, inner side tapers */
-    &::part(segment-f),
-    &::part(segment-e) {
-        clip-path: polygon(
-            0% 0%, 
-            100% var(--segment-thickness), 
-            100% calc(100% - var(--segment-thickness)), 
-            0% 100%
-        );
-    }
+	/* VERTICAL SEGMENTS (B, C, E, F): Outer side is flat, inner side tapers */
+	&::part(segment-f),
+	&::part(segment-e) {
+		clip-path: polygon(
+			0% 0%,
+			100% var(--segment-thickness),
+			100% calc(100% - var(--segment-thickness)),
+			0% 100%
+		);
+	}
 
-    &::part(segment-b),
-    &::part(segment-c) {
-        clip-path: polygon(
-            100% 0%, 
-            100% 100%, 
-            0% calc(100% - var(--segment-thickness)), 
-            0% var(--segment-thickness)
-        );
-    }
+	&::part(segment-b),
+	&::part(segment-c) {
+		clip-path: polygon(
+			100% 0%,
+			100% 100%,
+			0% calc(100% - var(--segment-thickness)),
+			0% var(--segment-thickness)
+		);
+	}
 
-    /* Base part rules */
-    &::part(digit-value) {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-    }
-    &::part(segment) {
-        display: block;
-        background-color: var(--segment-color);
-        transition: background-color 0.3s;
-        width: 100%;
-        height: 100%;
-    }
-    &::part(segment-active) {
-        --segment-color: var(--segment-active-color);
-    }
+	/* Base part rules */
+	&::part(digit-value) {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
+	}
+	&::part(segment) {
+		display: block;
+		background-color: var(--segment-color);
+		transition: background-color 0.3s;
+		width: 100%;
+		height: 100%;
+	}
+	&::part(segment-active) {
+		--segment-color: var(--segment-active-color);
+	}
 }
 
 @scope (wcpg-ssd) {
-    :scope {
-        display: inline-grid;
-        grid-auto-flow: column;
-        gap: 1ch;
-    }
+	:scope {
+		display: inline-grid;
+		grid-auto-flow: column;
+		gap: 1ch;
+	}
 
-    &::part(display-value),
-    &::part(digit-value) {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-    }
+	&::part(display-value),
+	&::part(digit-value) {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
+	}
 
-    &::part(digit) {
-        --digit-size: 3rem; 
-        --digit-height: var(--digit-size);
-        --digit-width: calc(var(--digit-height) / 2);
+	&::part(digit) {
+		--digit-size: 3rem;
+		--digit-height: var(--digit-size);
+		--digit-width: calc(var(--digit-height) / 2);
 
-        --thickness-ratio: 0.12; 
-        --gap-ratio: 0.02;       
+		--thickness-ratio: 0.12;
+		--gap-ratio: 0.02;
 
-        --segment-thickness: calc(var(--digit-width) * var(--thickness-ratio));
-        --digit-gap: calc(var(--digit-height) * var(--gap-ratio));
+		--segment-thickness: calc(var(--digit-width) * var(--thickness-ratio));
+		--digit-gap: calc(var(--digit-height) * var(--gap-ratio));
 
-        --segment-color: #220000; 
-        --segment-active-color: red;
+		--segment-color: #220000;
+		--segment-active-color: red;
 
-        display: grid;
-        position: relative;
-        width: var(--digit-width);
-        height: var(--digit-height);
-        gap: var(--digit-gap);
+		display: grid;
+		position: relative;
+		width: var(--digit-width);
+		height: var(--digit-height);
+		gap: var(--digit-gap);
 
-        /* 3 Columns: Left/Right are thickness, Middle takes the rest */
-        grid-template-columns: 
-            var(--segment-thickness) 
-            1fr 
-            var(--segment-thickness);
+		/* 3 Columns: Left/Right are thickness, Middle takes the rest */
+		grid-template-columns:
+			var(--segment-thickness)
+			1fr
+			var(--segment-thickness);
 
-        /* 5 Rows: 3 are thickness, 2 inner spaces split the remaining height */
-        grid-template-rows: 
-            var(--segment-thickness) 
-            1fr 
-            var(--segment-thickness) 
-            1fr 
-            var(--segment-thickness);
+		/* 5 Rows: 3 are thickness, 2 inner spaces split the remaining height */
+		grid-template-rows:
+			var(--segment-thickness)
+			1fr
+			var(--segment-thickness)
+			1fr
+			var(--segment-thickness);
 
-        grid-template-areas:
-            "a a a"
-            "f . b"
-            "g g g"
-            "e . c"
-            "d d d";
-    }
+		grid-template-areas:
+			'a a a'
+			'f . b'
+			'g g g'
+			'e . c'
+			'd d d';
+	}
 
-    /* Mapping */
-    &::part(segment-a) { grid-area: a; }
-    &::part(segment-b) { grid-area: b; }
-    &::part(segment-c) { grid-area: c; }
-    &::part(segment-d) { grid-area: d; }
-    &::part(segment-e) { grid-area: e; }
-    &::part(segment-f) { grid-area: f; }
-    &::part(segment-g) { grid-area: g; }
+	/* Mapping */
+	&::part(segment-a) {
+		grid-area: a;
+	}
+	&::part(segment-b) {
+		grid-area: b;
+	}
+	&::part(segment-c) {
+		grid-area: c;
+	}
+	&::part(segment-d) {
+		grid-area: d;
+	}
+	&::part(segment-e) {
+		grid-area: e;
+	}
+	&::part(segment-f) {
+		grid-area: f;
+	}
+	&::part(segment-g) {
+		grid-area: g;
+	}
 
-    /* SEGMENT A & D: Pointy on the inner bottom/top corners */
-    &::part(segment-a) {
-        clip-path: polygon(
-            0% 0%, 
-            100% 0%, 
-            calc(100% - var(--segment-thickness)) 100%, 
-            var(--segment-thickness) 100%
-        );
-    }
-    &::part(segment-d) {
-        clip-path: polygon(
-            var(--segment-thickness) 0%, 
-            calc(100% - var(--segment-thickness)) 0%, 
-            100% 100%, 
-            0% 100%
-        );
-    }
+	/* SEGMENT A & D: Pointy on the inner bottom/top corners */
+	&::part(segment-a) {
+		clip-path: polygon(
+			0% 0%,
+			100% 0%,
+			calc(100% - var(--segment-thickness)) 100%,
+			var(--segment-thickness) 100%
+		);
+	}
+	&::part(segment-d) {
+		clip-path: polygon(
+			var(--segment-thickness) 0%,
+			calc(100% - var(--segment-thickness)) 0%,
+			100% 100%,
+			0% 100%
+		);
+	}
 
-    /* SEGMENT G (Middle): Double trapezoid pointing outward left/right */
-    &::part(segment-g) {
-        clip-path: polygon(
-            0% 50%, 
-            var(--segment-thickness) 0%, 
-            calc(100% - var(--segment-thickness)) 0%, 
-            100% 50%, 
-            calc(100% - var(--segment-thickness)) 100%, 
-            var(--segment-thickness) 100%
-        );
-    }
+	/* SEGMENT G (Middle): Double trapezoid pointing outward left/right */
+	&::part(segment-g) {
+		clip-path: polygon(
+			0% 50%,
+			var(--segment-thickness) 0%,
+			calc(100% - var(--segment-thickness)) 0%,
+			100% 50%,
+			calc(100% - var(--segment-thickness)) 100%,
+			var(--segment-thickness) 100%
+		);
+	}
 
-    /* VERTICAL SEGMENTS (B, C, E, F): Outer side is flat, inner side tapers */
-    &::part(segment-f),
-    &::part(segment-e) {
-        clip-path: polygon(
-            0% 0%, 
-            100% var(--segment-thickness), 
-            100% calc(100% - var(--segment-thickness)), 
-            0% 100%
-        );
-    }
+	/* VERTICAL SEGMENTS (B, C, E, F): Outer side is flat, inner side tapers */
+	&::part(segment-f),
+	&::part(segment-e) {
+		clip-path: polygon(
+			0% 0%,
+			100% var(--segment-thickness),
+			100% calc(100% - var(--segment-thickness)),
+			0% 100%
+		);
+	}
 
-    &::part(segment-b),
-    &::part(segment-c) {
-        clip-path: polygon(
-            100% 0%, 
-            100% 100%, 
-            0% calc(100% - var(--segment-thickness)), 
-            0% var(--segment-thickness)
-        );
-    }
+	&::part(segment-b),
+	&::part(segment-c) {
+		clip-path: polygon(
+			100% 0%,
+			100% 100%,
+			0% calc(100% - var(--segment-thickness)),
+			0% var(--segment-thickness)
+		);
+	}
 
-    &::part(segment) {
-        display: block;
-        background-color: var(--segment-color);
-        transition: background-color 0.3s;
-        width: 100%;
-        height: 100%;
-    }
-    &::part(segment-active) {
-        --segment-color: var(--segment-active-color);
-    }
+	&::part(segment) {
+		display: block;
+		background-color: var(--segment-color);
+		transition: background-color 0.3s;
+		width: 100%;
+		height: 100%;
+	}
+	&::part(segment-active) {
+		--segment-color: var(--segment-active-color);
+	}
 }

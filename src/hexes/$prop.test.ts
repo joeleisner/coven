@@ -19,7 +19,9 @@ test('$prop callback fires on change', () => {
 	$prop(el, {
 		name: 'count',
 		value: 0,
-		callback: () => { calls++; },
+		callback: () => {
+			calls++;
+		},
 	});
 	// deno-lint-ignore no-explicit-any
 	(el as any).count = 1;

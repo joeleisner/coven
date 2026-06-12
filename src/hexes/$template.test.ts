@@ -1,10 +1,5 @@
 import { test } from '../_test/setup.ts';
-import {
-	assert,
-	assertEquals,
-	assertNotStrictEquals,
-	assertStrictEquals,
-} from '@std/assert';
+import { assert, assertEquals, assertNotStrictEquals, assertStrictEquals } from '@std/assert';
 import { $template } from './$template.ts';
 
 let counter = 0;
