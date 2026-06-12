@@ -1,13 +1,15 @@
-import { grimoire, type GrimoireElement } from "../grimoire.ts";
-import { $bewitch } from "./$bewitch.ts";
-import $mut from "./$mut.ts";
-import $prop from "./$prop.ts";
+import { grimoire, type GrimoireElement } from '../grimoire.ts';
+import { $bewitch } from './$bewitch.ts';
+import $mut from './$mut.ts';
+import $prop from './$prop.ts';
 
 const $ATTR_GRIMOIRE_SYMBOL = Symbol('$attr');
 type $AttrGrimoire = { names?: Set<string> };
 
+/** The primitive value types `$attr` can reflect to an attribute. */
 export type $AttrValue = string | number | boolean;
 
+/** Configuration accepted by `$attr`. */
 export type $AttrConfig<TValue extends $AttrValue> = {
 	name: string;
 	value: TValue;
@@ -15,13 +17,29 @@ export type $AttrConfig<TValue extends $AttrValue> = {
 };
 
 /**
- * Binds a property of a component to an attribute, with optional default value and change callback.
+ * Binds a property of a component to a same-named HTML attribute,
+ * keeping the two in sync in both directions. The default value seeds
+ * the property when the attribute is absent, and an optional callback
+ * fires on every change. Internally combines `$prop` (for the property
+ * surface) with `$mut` (for attribute observation).
  *
  * @param element - The component instance.
- * @param name - The name of the property/attribute.
- * @param value - The default value for the property.
- * @param callback - Optional callback to be invoked when the property changes.
+ * @param config - Attribute name, default value, and optional callback.
  * @returns The initial value of the property.
+ *
+ * @see {@link $prop}
+ *
+ * @example
+ * ```ts ignore
+ * import { $attr } from '@joeleisner/coven';
+ *
+ * const el = document.createElement('my-el') as HTMLElement & { count: number };
+ * $attr<number>(el, {
+ * 	name: 'count',
+ * 	value: 0,
+ * 	callback: (next) => console.log('count is now', next),
+ * });
+ * ```
  */
 export function $attr<
 	TValue extends $AttrValue = string,
@@ -31,7 +49,7 @@ export function $attr<
 		name,
 		value,
 		callback,
-	}: $AttrConfig<TValue>
+	}: $AttrConfig<TValue>,
 ): TValue {
 	const signal = $bewitch(element);
 
@@ -43,24 +61,29 @@ export function $attr<
 	store.names.add(name);
 
 	const parseAttributeValue = (attrValue: string | null): TValue => {
-		if (attrValue === null)
+		if (attrValue === null) {
 			return value;
+		}
 
-		if (typeof value === 'boolean')
+		if (typeof value === 'boolean') {
 			return true as TValue;
+		}
 
-		if (typeof value === 'number')
+		if (typeof value === 'number') {
 			return Number(attrValue) as TValue;
+		}
 
 		return attrValue as TValue;
 	};
 
 	const reflectAttributeValue = (value: TValue): void => {
-		if (value === false || value === null || value === undefined)
+		if (value === false || value === null || value === undefined) {
 			return element.removeAttribute(name);
+		}
 
-		if (value === true)
+		if (value === true) {
 			return element.setAttribute(name, '');
+		}
 
 		element.setAttribute(name, String(value));
 	};

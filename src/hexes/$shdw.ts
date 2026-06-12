@@ -1,6 +1,6 @@
-import { $template } from "./$template.ts";
-import { $mut } from "./$mut.ts";
-import { grimoire, type GrimoireElement } from "../grimoire.ts";
+import { $template } from './$template.ts';
+import { $mut } from './$mut.ts';
+import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
 const $SHDW_GRIMOIRE_SYMBOL = Symbol('$shdw');
 
@@ -27,6 +27,19 @@ function collectParts(root: ParentNode, into: Set<string>): void {
  * @param component - The element to attach the shadow root to.
  * @param html - Optional HTML to populate the shadow with.
  * @returns The shadow root.
+ *
+ * @see {@link $template}
+ *
+ * @example
+ * ```ts ignore
+ * import { Familiar, $shdw } from '@joeleisner/coven';
+ *
+ * class MyEl extends Familiar {
+ * 	setup() {
+ * 		$shdw(this, `<button part="btn">click</button>`);
+ * 	}
+ * }
+ * ```
  */
 export function $shdw(
 	component: HTMLElement,
@@ -86,8 +99,7 @@ $shdw.parts = (element: HTMLElement): ReadonlySet<string> | undefined =>
  * @param element - The host element.
  * @returns The shadow root.
  */
-$shdw.root = (element: HTMLElement): ShadowRoot | null =>
-	element.shadowRoot;
+$shdw.root = (element: HTMLElement): ShadowRoot | null => element.shadowRoot;
 
 /**
  * Re-run exportparts propagation manually. Useful when shadow

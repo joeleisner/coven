@@ -1,22 +1,50 @@
-import { grimoire } from "../grimoire.ts";
-import { $bewitch } from "./$bewitch.ts";
+import { grimoire } from '../grimoire.ts';
+import { $bewitch } from './$bewitch.ts';
 
+/** Grimoire slot key for `$scry`'s per-element state. */
 export const $INT_GRIMOIRE_SYMBOL = Symbol('$int');
 
+/** Per-element state stored under `$INT_GRIMOIRE_SYMBOL`. */
 export type $IntGrimoire = {
 	observers?: Set<IntersectionObserver>;
 };
 
+/**
+ * Configuration accepted by `$scry`. Extends `IntersectionObserverInit`
+ * with the required `callback`.
+ */
 export type $IntConfig = IntersectionObserverInit & {
 	callback: IntersectionObserverCallback;
 };
 
+/**
+ * Creates and starts an `IntersectionObserver` on the element with
+ * automatic cleanup via the element's `$bewitch` signal. Each call
+ * creates a new observer (intentional, since different call sites
+ * usually want different thresholds); use `$scry.observers` to
+ * inspect them.
+ *
+ * @param element - The element to observe.
+ * @param config - `IntersectionObserverInit` plus the required `callback`.
+ * @returns The created `IntersectionObserver`.
+ *
+ * @example
+ * ```ts ignore
+ * import { $scry } from '@joeleisner/coven';
+ *
+ * const el = document.querySelector('my-el')! as HTMLElement;
+ * $scry(el, {
+ * 	threshold: 0.5,
+ * 	callback: (entries) => console.log(entries[0]?.isIntersecting),
+ * });
+ * ```
+ */
 export function $scry(
 	element: HTMLElement,
 	{
 		callback,
 		...init
-	}: $IntConfig
+	}: $IntConfig,
 ): IntersectionObserver {
 	const signal = $bewitch(element);
 	const store = grimoire<$IntGrimoire>(element, $INT_GRIMOIRE_SYMBOL);
@@ -27,8 +55,9 @@ export function $scry(
 		...init,
 	});
 
-	if (signal.aborted)
+	if (signal.aborted) {
 		return observer;
+	}
 
 	store.observers.add(observer);
 

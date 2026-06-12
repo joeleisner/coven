@@ -14,6 +14,20 @@ type $TemplateGrimoire = {
  * @param element - The element whose class owns the cache.
  * @param html - The HTML string to parse.
  * @returns The cached HTMLTemplateElement.
+ *
+ * @see {@link $shdw}
+ *
+ * @example
+ * ```ts ignore
+ * import { Familiar, $template } from '@joeleisner/coven';
+ *
+ * class MyEl extends Familiar {
+ * 	setup() {
+ * 		const tpl = $template(this, `<span>hi</span>`);
+ * 		this.appendChild(tpl.content.cloneNode(true));
+ * 	}
+ * }
+ * ```
  */
 export function $template(
 	element: HTMLElement,
@@ -58,7 +72,6 @@ $template.cache = (
 $template.clone = (
 	element: HTMLElement,
 	html: string,
-): DocumentFragment =>
-	$template(element, html).content.cloneNode(true) as DocumentFragment;
+): DocumentFragment => $template(element, html).content.cloneNode(true) as DocumentFragment;
 
 export default $template;

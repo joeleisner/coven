@@ -22,6 +22,17 @@ type $BewitchGrimoire = {
  * @param node - The node to bewitch.
  * @param signal - Optional external signal to adopt.
  * @returns The node's signal.
+ *
+ * @see {@link Familiar}
+ *
+ * @example
+ * ```ts ignore
+ * import { $bewitch, $on } from '@joeleisner/coven';
+ *
+ * const el = document.querySelector('button')! as HTMLElement;
+ * const signal = $bewitch(el);
+ * $on(el, { type: 'click', callback: () => {}, signal });
+ * ```
  */
 export function $bewitch(
 	node: Node,

@@ -5,6 +5,25 @@ import { $bewitch } from './hexes/$bewitch.ts';
  * (setup / connected / disconnected) and exposes an AbortSignal that
  * hexes use for cleanup. The signal is managed by $bewitch — the same
  * mechanism that powers any bring-your-own web component.
+ *
+ * Subclasses implement any of the three optional hooks; the base
+ * class wires them to the standard custom-element lifecycle and
+ * renews the signal on reconnect.
+ *
+ * @see {@link $bewitch}
+ *
+ * @example
+ * ```ts ignore
+ * import { Familiar, $define, $on } from '@joeleisner/coven';
+ *
+ * class MyButton extends Familiar {
+ * 	connected(signal: AbortSignal) {
+ * 		$on(this, { type: 'click', callback: () => {}, signal });
+ * 	}
+ * }
+ *
+ * $define('my-button', MyButton);
+ * ```
  */
 export abstract class Familiar extends HTMLElement {
 	setup?(signal: AbortSignal): void;
