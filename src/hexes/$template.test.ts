@@ -1,6 +1,7 @@
 import { test } from '../_test/setup.ts';
 import { assert, assertEquals, assertNotStrictEquals, assertStrictEquals } from '@std/assert';
 import { $template } from './$template.ts';
+import { $bewitch } from './$bewitch.ts';
 
 let counter = 0;
 function tagName(): string {
@@ -73,4 +74,16 @@ test('$template.clone(element, html) returns a DocumentFragment', () => {
 	// register in setup.ts, so check by nodeType (11 = DOCUMENT_FRAGMENT_NODE).
 	assertEquals(frag.nodeType, 11);
 	assertEquals(frag.querySelector('i')?.textContent, 'cloned');
+});
+
+test('$template hex bewitches the element (all hexes guarantee this)', () => {
+	class T extends HTMLElement {}
+	const name = tagName();
+	customElements.define(name, T);
+	const el = document.createElement(name);
+	$template(el, '<i></i>');
+	assert(
+		$bewitch.signal(el) !== undefined,
+		'element should be bewitched after $template hex',
+	);
 });

@@ -1,6 +1,9 @@
+import { $template as $templateCharm } from '../charms/$template.ts';
+import { $bewitch } from './$bewitch.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-const $TEMPLATE_GRIMOIRE_SYMBOL = Symbol('$template');
+/** @advanced Direct access to $template's grimoire slot. */
+export const $TEMPLATE_GRIMOIRE_SYMBOL = Symbol('$template');
 
 type $TemplateGrimoire = {
 	templates?: Map<string, HTMLTemplateElement>;
@@ -33,6 +36,8 @@ export function $template(
 	element: HTMLElement,
 	html: string,
 ): HTMLTemplateElement {
+	$bewitch(element);
+
 	const store = grimoire.shared<$TemplateGrimoire>(
 		element as GrimoireElement,
 		$TEMPLATE_GRIMOIRE_SYMBOL,
@@ -41,8 +46,7 @@ export function $template(
 
 	let template = store.templates.get(html);
 	if (!template) {
-		template = document.createElement('template');
-		template.innerHTML = html;
+		template = $templateCharm(html);
 		store.templates.set(html, template);
 	}
 	return template;
