@@ -1,5 +1,5 @@
 import { test } from '../_test/setup.ts';
-import { assert } from '@std/assert';
+import { assert, assertEquals } from '@std/assert';
 import { $scry } from './$scry.ts';
 
 test('$scry creates an IntersectionObserver', () => {
@@ -23,4 +23,5 @@ test('$scry.disconnect(element) disconnects all observers', () => {
 	obs.disconnect = () => { disconnected = true; orig(); };
 	$scry.disconnect(el);
 	assert(disconnected);
+	assertEquals($scry.observers(el)?.size, 0);
 });

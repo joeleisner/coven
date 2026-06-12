@@ -1,4 +1,4 @@
-import { grimoire, type GrimoireElement } from "../grimoire.ts";
+import { grimoire } from "../grimoire.ts";
 import { $bewitch } from "./$bewitch.ts";
 
 export const $INT_GRIMOIRE_SYMBOL = Symbol('$int');
@@ -36,7 +36,8 @@ export function $scry(
 
 	signal.addEventListener('abort', () => {
 		observer.disconnect();
-	});
+		store.observers?.delete(observer);
+	}, { once: true });
 
 	return observer;
 }
@@ -49,10 +50,7 @@ export function $scry(
  * @returns The `Set` of observers, or `undefined`.
  */
 $scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined =>
-	grimoire<$IntGrimoire>(
-		element as unknown as GrimoireElement,
-		$INT_GRIMOIRE_SYMBOL,
-	).observers;
+	grimoire<$IntGrimoire>(element, $INT_GRIMOIRE_SYMBOL).observers;
 
 /**
  * Disconnects every `IntersectionObserver` registered for this element
@@ -61,10 +59,7 @@ $scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined 
  * @param element - The element whose observers should be disconnected.
  */
 $scry.disconnect = (element: HTMLElement): void => {
-	const store = grimoire<$IntGrimoire>(
-		element as unknown as GrimoireElement,
-		$INT_GRIMOIRE_SYMBOL,
-	);
+	const store = grimoire<$IntGrimoire>(element, $INT_GRIMOIRE_SYMBOL);
 	store.observers?.forEach((o) => o.disconnect());
 	store.observers?.clear();
 };

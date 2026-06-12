@@ -1,5 +1,5 @@
 import { test } from '../_test/setup.ts';
-import { assert, assertEquals } from '@std/assert';
+import { assert, assertEquals, assertStrictEquals } from '@std/assert';
 import { $mut } from './$mut.ts';
 
 test('$mut observes the given node when it is an element', async () => {
@@ -40,7 +40,7 @@ test('$mut returns the same observer on repeat calls for the same node', () => {
 	const el = document.createElement('div');
 	const a = $mut(el, { type: 'attributes', callback: () => {} });
 	const b = $mut(el, { type: 'attributes', callback: () => {} });
-	assertEquals(a, b);
+	assertStrictEquals(a, b);
 });
 
 test('$mut.observer(element) returns the underlying MutationObserver', () => {
