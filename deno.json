@@ -1,14 +1,17 @@
 {
 	"name": "@joeleisner/coven",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"license": "Apache-2.0",
 	"exports": {
-		".": "./src/mod.ts"
+		".": "./src/mod.ts",
+		"./charms": "./src/charms/mod.ts",
+		"./hexes": "./src/hexes/mod.ts",
+		"./familiar": "./src/familiar.ts",
+		"./grimoire": "./src/grimoire.ts"
 	},
 	"imports": {
 		"vite": "npm:vite@^7",
 		"@deno/vite-plugin": "npm:@deno/vite-plugin@^1",
-		"postcss-mixins": "npm:postcss-mixins@^12",
 		"happy-dom": "npm:happy-dom@^15",
 		"@std/assert": "jsr:@std/assert@^1"
 	},
@@ -46,10 +49,8 @@
 		],
 		"exclude": [
 			"src/**/*.test.ts",
-			"src/_examples/**",
+			"src/_playground/**",
 			"src/_test/**",
-			"src/example.ts",
-			"src/example.css",
 			"vite.config.ts",
 			"index.html"
 		]

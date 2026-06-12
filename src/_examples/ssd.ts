@@ -1,6 +1,8 @@
 import './ssd.css';
 
-import { $attr, $define, $mut, $prop, $scry, $shdw, Familiar, grimoire } from '../mod.ts';
+import { Familiar, grimoire } from '../mod.ts';
+import { $attr, $mut, $prop, $scry, $shdw } from '../hexes/mod.ts';
+import { $define } from '../charms/mod.ts';
 
 const namespace = 'wcpg-ssd';
 
