@@ -122,6 +122,7 @@ export function $mut<
 	};
 
 	const observer = new MutationObserver(onChange);
+	store.observer = observer;
 
 	observer.observe(node, {
 		attributes: type === 'attributes',
@@ -140,5 +141,37 @@ export function $mut<
 
 	return observer;
 }
+
+/**
+ * Returns the underlying `MutationObserver` shared by all `$mut` calls
+ * on this node, or `undefined` if `$mut` has not been called for it yet.
+ *
+ * @param node - The node to look up.
+ * @returns The shared `MutationObserver`, or `undefined`.
+ */
+$mut.observer = (node: Node): MutationObserver | undefined =>
+	grimoire<$MutGrimoire>(
+		node as GrimoireElement,
+		$MUT_GRIMOIRE_SYMBOL,
+	).observer;
+
+/**
+ * Returns the `Set` of registered callbacks for a given mutation `type`
+ * on this node, or `undefined` if none have been registered.
+ *
+ * @param node - The node to look up.
+ * @param type - The mutation type (`attributes` | `childList` | `characterData`).
+ * @returns The `Set` of callbacks for that type, or `undefined`.
+ */
+$mut.listeners = <TType extends keyof $MutValueMap>(
+	node: Node,
+	type: TType,
+): Set<$MutCallbacks[TType]> | undefined => {
+	const store = grimoire<$MutGrimoire>(
+		node as GrimoireElement,
+		$MUT_GRIMOIRE_SYMBOL,
+	);
+	return store.listeners?.[type] as Set<$MutCallbacks[TType]> | undefined;
+};
 
 export default $mut;

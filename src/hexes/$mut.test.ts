@@ -42,3 +42,17 @@ test('$mut returns the same observer on repeat calls for the same node', () => {
 	const b = $mut(el, { type: 'attributes', callback: () => {} });
 	assertEquals(a, b);
 });
+
+test('$mut.observer(element) returns the underlying MutationObserver', () => {
+	const el = document.createElement('div');
+	$mut(el, { type: 'attributes', callback: () => {} });
+	assert($mut.observer(el) instanceof MutationObserver);
+});
+
+test('$mut.listeners(element, type) returns the listener Set', () => {
+	const el = document.createElement('div');
+	const cb = () => {};
+	$mut(el, { type: 'attributes', callback: cb });
+	const listeners = $mut.listeners(el, 'attributes');
+	assert(listeners?.has(cb));
+});
