@@ -1,0 +1,37 @@
+@scope(coven-toggle) {
+	:scope {
+		display: block;
+		position: relative;
+		aspect-ratio: 2/1;
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	* {
+		position: absolute;
+		top: 50%;
+		left: 0.5rem;
+		transform: translateY(-50%);
+	}
+
+	&::part(trigger) {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 3rem;
+		height: 1.5rem;
+		border-radius: 0.75rem;
+		border: 1px solid var(--pico-color-grey-300);
+		background: var(--pico-color-grey-300);
+		cursor: pointer;
+		color: var(--pico-color-zinc-900);
+		transition: background 0.2s, color 0.2s;
+	}
+
+	/* Hover/focus must be flat — CSS nesting cannot re-enter a ::part() rule */
+	&::part(trigger):hover,
+	&::part(trigger):focus-visible {
+		background: var(--pico-color-grey-500);
+		color: var(--pico-color-zinc-100);
+	}
+}

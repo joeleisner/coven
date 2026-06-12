@@ -19,6 +19,7 @@
 		"./hexes/soul": "./src/hexes/$soul.ts"
 	},
 	"imports": {
+		"@src/": "./src/",
 		"vite": "npm:vite@^7",
 		"@deno/vite-plugin": "npm:@deno/vite-plugin@^1",
 		"happy-dom": "npm:happy-dom@^15",

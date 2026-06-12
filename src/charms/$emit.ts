@@ -5,13 +5,13 @@ const defaultEmitOptions: EventInit = {
 };
 
 /**
- * Dispatches an event whose type is the element's lowercased tag name.
- * Defaults to a bubbling, cancelable, composed event so the dispatch
- * crosses shadow boundaries by default. Pass `detail` in `options` to
- * send a `CustomEvent` instead of a plain `Event`.
+ * Dispatches an event from the element. The event type is the element's
+ * lowercased tag name, optionally suffixed with `:name` when `name` is
+ * provided (e.g. `coven-counter:change`). Defaults to a bubbling,
+ * cancelable, composed event. Pass `detail` to send a `CustomEvent`.
  *
  * @param element - The element from which the event is dispatched.
- * @param options - Standard `EventInit` or `CustomEventInit` overrides.
+ * @param options - Emit options: optional `name` suffix, plus standard `EventInit` or `CustomEventInit` overrides.
  * @returns `false` if the event was canceled, `true` otherwise.
  *
  * @see {@link $on}
@@ -21,20 +21,23 @@ const defaultEmitOptions: EventInit = {
  * import { $emit } from '@joeleisner/coven';
  *
  * const el = document.querySelector('my-button')!;
- * $emit<{ id: number }>(el as HTMLElement, { detail: { id: 1 } });
+ * // dispatches 'my-button:click'
+ * $emit<{ id: number }>(el as HTMLElement, { name: 'click', detail: { id: 1 } });
  * ```
  */
 export function $emit<
 	TDetail extends unknown | never = never,
 >(
 	element: HTMLElement,
-	options: EventInit | CustomEventInit<TDetail> = {},
+	options: (EventInit | CustomEventInit<TDetail>) & { name?: string } = {},
 ): boolean {
-	options = Object.assign({}, defaultEmitOptions, options);
+	const tag = element.tagName.toLowerCase();
+	const type = options.name ? `${tag}:${options.name}` : tag;
+	const merged = Object.assign({}, defaultEmitOptions, options) as EventInit | CustomEventInit<TDetail>;
 
-	const event = 'detail' in options
-		? new CustomEvent(element.tagName.toLowerCase(), options as CustomEventInit<TDetail>)
-		: new Event(element.tagName.toLowerCase(), options as EventInit);
+	const event = 'detail' in merged
+		? new CustomEvent(type, merged as CustomEventInit<TDetail>)
+		: new Event(type, merged as EventInit);
 
 	return element.dispatchEvent(event);
 }

@@ -1,0 +1,15 @@
+@scope(coven-log) {
+	:scope {
+		display: block;
+	}
+
+	ol {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		/* When --cap is set, the list takes up a fixed height equal to cap rows.
+		   When --cap is not set (cap="0" or no attribute), height is auto. */
+		height: calc(var(--cap) * 1lh);
+		overflow-y: auto;
+	}
+}
