@@ -53,3 +53,5 @@ export function $on<
 		{ signal },
 	);
 }
+
+export default $on;

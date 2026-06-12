@@ -1,6 +1,7 @@
 import { test } from '../_test/setup.ts';
 import { assert, assertEquals } from '@std/assert';
 import { $shdw } from './$shdw.ts';
+import { $mut } from './$mut.ts';
 
 test('$shdw attaches a shadow root and populates it', () => {
 	const el = document.createElement('div');
@@ -103,21 +104,11 @@ test('$shdw is safe to call repeatedly on the same element — no double subscri
 	assertEquals(fireCount, 0, 'no propagation because not inside a parent shadow');
 });
 
-test('$shdw double-call does not multiply $mut listeners (audit via $mut.listeners would be ideal but unavailable until Phase E)', async () => {
-	// Indirect check: track how many times the parts set is mutated via
-	// observing collectParts'd output. Adding one [part] node should grow
-	// the set by exactly 1.
+test('$shdw double-call does not multiply $mut listeners on the shadow root', () => {
 	const el = document.createElement('div');
 	$shdw(el, '<div part="initial"></div>');
-	$shdw(el, '<span part="also"></span>'); // second call — should not double-subscribe
+	$shdw(el, '<span part="also"></span>');
 
-	const partsBefore = new Set($shdw.parts(el));
-	const late = document.createElement('em');
-	late.setAttribute('part', 'late');
-	$shdw.root(el)!.appendChild(late);
-	await new Promise((r) => setTimeout(r, 0));
-
-	const partsAfter = $shdw.parts(el)!;
-	assert(partsAfter.has('late'));
-	assertEquals(partsAfter.size, partsBefore.size + 1, 'exactly one new part added');
+	const listeners = $mut.listeners($shdw.root(el)!, 'childList');
+	assertEquals(listeners?.size, 1, 'shadow root has exactly one childList listener');
 });

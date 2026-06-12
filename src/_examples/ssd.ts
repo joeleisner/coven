@@ -40,7 +40,7 @@ class SSDDigit extends Familiar {
 		});
 	}
 
-	setup(): void {
+	override setup(): void {
 		const shadow = $shdw(
 			this,
 			/*html*/ `
@@ -61,7 +61,7 @@ class SSDDigit extends Familiar {
 		});
 	}
 
-	connected(): void {
+	override connected(): void {
 		$attr<string>(this, {
 			name: 'value',
 			value: ' ',
@@ -114,7 +114,7 @@ $define(
 			});
 		}
 
-		setup() {
+		override setup() {
 			$shdw(
 				this,
 				/*html*/ `
@@ -123,7 +123,7 @@ $define(
 			);
 		}
 
-		connected() {
+		override connected() {
 			this.updateDisplay(this.textContent);
 
 			$mut(this, {
@@ -133,7 +133,7 @@ $define(
 			});
 		}
 
-		disconnected() {
+		override disconnected() {
 			this.digits = [];
 		}
 	},
@@ -148,7 +148,7 @@ $define(
 			return this.intersected ? 'Intersected' : 'Not intersected';
 		}
 
-		setup() {
+		override setup() {
 			// console.log('setup!');
 			$shdw(
 				this,
@@ -159,7 +159,7 @@ $define(
 			);
 		}
 
-		connected() {
+		override connected() {
 			$scry(this, {
 				callback: (entries, observer) => {
 					this.intersected = entries.some((entry) => entry.isIntersecting);

@@ -38,3 +38,5 @@ export function $emit<
 
 	return element.dispatchEvent(event);
 }
+
+export default $emit;
