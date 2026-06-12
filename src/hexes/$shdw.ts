@@ -1,8 +1,11 @@
+import { $shdw as $shdwCharm } from '../charms/$shdw.ts';
+import { $bewitch } from './$bewitch.ts';
 import { $template } from './$template.ts';
 import { $mut } from './$mut.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-const $SHDW_GRIMOIRE_SYMBOL = Symbol('$shdw');
+/** @advanced Direct access to $shdw's grimoire slot. */
+export const $SHDW_GRIMOIRE_SYMBOL = Symbol('$shdw');
 
 type $ShdwGrimoire = {
 	parts?: Set<string>;
@@ -45,6 +48,8 @@ export function $shdw(
 	component: HTMLElement,
 	html?: HTMLTemplateElement | string,
 ): ShadowRoot {
+	$bewitch(component);
+
 	if (typeof html === 'string') html = $template(component, html);
 
 	const store = grimoire<$ShdwGrimoire>(
@@ -55,12 +60,7 @@ export function $shdw(
 
 	const firstCall = !component.shadowRoot;
 
-	if (firstCall) {
-		component.attachShadow({ mode: 'open' });
-		if (html) {
-			component.shadowRoot!.appendChild(html.content.cloneNode(true));
-		}
-	}
+	$shdwCharm(component, html);
 
 	collectParts(component.shadowRoot!, store.parts);
 
