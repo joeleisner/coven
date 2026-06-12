@@ -7,7 +7,16 @@
 		"./charms": "./src/charms/mod.ts",
 		"./hexes": "./src/hexes/mod.ts",
 		"./familiar": "./src/familiar.ts",
-		"./grimoire": "./src/grimoire.ts"
+		"./grimoire": "./src/grimoire.ts",
+		"./hexes/$bewitch": "./src/hexes/$bewitch.ts",
+		"./hexes/$attr": "./src/hexes/$attr.ts",
+		"./hexes/$prop": "./src/hexes/$prop.ts",
+		"./hexes/$mut": "./src/hexes/$mut.ts",
+		"./hexes/$scry": "./src/hexes/$scry.ts",
+		"./hexes/$shdw": "./src/hexes/$shdw.ts",
+		"./hexes/$template": "./src/hexes/$template.ts",
+		"./hexes/$on": "./src/hexes/$on.ts",
+		"./hexes/$soul": "./src/hexes/$soul.ts"
 	},
 	"imports": {
 		"vite": "npm:vite@^7",
