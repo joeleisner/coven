@@ -120,11 +120,12 @@ export function $attr<
 			if (syncingFromProperty) return;
 
 			const parsedValue = parseAttributeValue(newValue);
-			if ((element as any)[name] === parsedValue) return;
+			const target = element as unknown as Record<string, unknown>;
+			if (target[name] === parsedValue) return;
 
 			syncingFromAttribute = true;
 			try {
-				(element as any)[name] = parsedValue;
+				target[name] = parsedValue;
 			} finally {
 				syncingFromAttribute = false;
 			}
