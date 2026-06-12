@@ -1,4 +1,4 @@
-import { grimoire } from "../grimoire.ts";
+import { grimoire, type GrimoireElement } from "../grimoire.ts";
 import { $bewitch } from "./$bewitch.ts";
 
 export const $INT_GRIMOIRE_SYMBOL = Symbol('$int');
@@ -40,5 +40,33 @@ export function $scry(
 
 	return observer;
 }
+
+/**
+ * Returns the `Set` of `IntersectionObserver`s registered for this element
+ * via `$scry`, or `undefined` if none have been registered.
+ *
+ * @param element - The element to look up.
+ * @returns The `Set` of observers, or `undefined`.
+ */
+$scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined =>
+	grimoire<$IntGrimoire>(
+		element as unknown as GrimoireElement,
+		$INT_GRIMOIRE_SYMBOL,
+	).observers;
+
+/**
+ * Disconnects every `IntersectionObserver` registered for this element
+ * via `$scry`, then clears the internal `Set`.
+ *
+ * @param element - The element whose observers should be disconnected.
+ */
+$scry.disconnect = (element: HTMLElement): void => {
+	const store = grimoire<$IntGrimoire>(
+		element as unknown as GrimoireElement,
+		$INT_GRIMOIRE_SYMBOL,
+	);
+	store.observers?.forEach((o) => o.disconnect());
+	store.observers?.clear();
+};
 
 export default $scry;
