@@ -1,0 +1,24 @@
+@scope (coven-resize) {
+	:scope {
+		display: block;
+		position: relative;
+		resize: both;
+		overflow: hidden;
+		min-width: 10rem;
+		min-height: 6rem;
+		border: 2px dashed var(--pico-color-violet-500);
+		border-radius: 0.25rem;
+		padding: 0.5rem;
+	}
+
+	&::part(dims) {
+		position: absolute;
+		top: 0.25rem;
+		right: 0.5rem;
+		font-size: 0.75rem;
+		color: var(--pico-color-violet-500);
+		font-weight: bold;
+		font-variant-numeric: tabular-nums;
+		pointer-events: none;
+	}
+}

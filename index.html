@@ -16,7 +16,10 @@
 
 			<section>
 				<h2>Log</h2>
-				<coven-log listen="coven-counter:change coven-toggle:change coven-toggle:viewport" cap="10">
+				<coven-log
+					listen="coven-counter:change coven-toggle:change coven-toggle:viewport coven-resize:change"
+					cap="10"
+				>
 					<ol><li>Waiting for events...</li></ol>
 				</coven-log>
 			</section>
@@ -35,6 +38,13 @@
 						<coven-toggle>
 							<p>This content can be shown or hidden.</p>
 						</coven-toggle>
+					</article>
+					<article>
+						<h3>Resize</h3>
+						<hr />
+						<coven-resize>
+							<p>Drag the corner to resize.</p>
+						</coven-resize>
 					</article>
 				</div>
 			</section>
