@@ -1,5 +1,6 @@
 export { $attr } from './$attr.ts';
 export { $bewitch } from './$bewitch.ts';
+export { $morph } from './$morph.ts';
 export { $mut } from './$mut.ts';
 export { $on } from './$on.ts';
 export { $prop } from './$prop.ts';

@@ -1,6 +1,6 @@
 {
 	"name": "@joeleisner/coven",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"license": "Apache-2.0",
 	"exports": {
 		".": "./src/mod.ts",
@@ -16,7 +16,8 @@
 		"./hexes/shdw": "./src/hexes/$shdw.ts",
 		"./hexes/template": "./src/hexes/$template.ts",
 		"./hexes/on": "./src/hexes/$on.ts",
-		"./hexes/soul": "./src/hexes/$soul.ts"
+		"./hexes/soul": "./src/hexes/$soul.ts",
+		"./hexes/morph": "./src/hexes/$morph.ts"
 	},
 	"imports": {
 		"@src/": "./src/",
