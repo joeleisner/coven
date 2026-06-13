@@ -15,8 +15,17 @@ type $SoulGrimoire = {
 	bound?: boolean;
 };
 
+/** Lifecycle callbacks accepted by {@link $soul}. */
 export type $SoulOptions = {
+	/**
+	 * Called when the element is connected (or reconnected) to the DOM,
+	 * deferred to DOM-ready. Receives the current {@link AbortSignal}.
+	 */
 	connected?: (signal: AbortSignal) => void;
+	/**
+	 * Called when the element is disconnected from the DOM. The signal is
+	 * already aborted by the time this runs.
+	 */
 	disconnected?: () => void;
 };
 

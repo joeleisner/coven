@@ -25,9 +25,13 @@ type $PropGrimoire = {
 
 /** Configuration accepted by `$prop`. */
 export type $PropConfig<TValue = unknown> = {
+	/** The property name to install on the element. */
 	name: string;
+	/** The initial value for the property. */
 	value: TValue;
+	/** Called with `(newValue, oldValue)` after each change. */
 	callback?: $PropCallback<TValue>;
+	/** When `true`, throws a `CovenError` on write attempts. */
 	readonly?: boolean;
 };
 

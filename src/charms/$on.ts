@@ -13,8 +13,11 @@ export type $OnOptions<
 	TDetail extends unknown | never = never,
 	TEvent = [TDetail] extends [never] ? Event : CustomEvent<TDetail>,
 > = {
+	/** The event type string to listen for (e.g. `'click'`, `'my-el:change'`). */
 	type: string;
+	/** Handler invoked each time the event fires. */
 	callback: (event: TEvent) => void;
+	/** Optional signal; when aborted the listener is removed automatically. */
 	signal?: AbortSignal;
 };
 

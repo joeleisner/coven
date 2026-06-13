@@ -14,6 +14,7 @@ export const $SCRY_GRIMOIRE_SYMBOL = Symbol('$scry');
  * @advanced Per-element state stored under {@link $SCRY_GRIMOIRE_SYMBOL}.
  */
 export type $ScryGrimoire = {
+	/** The set of active IntersectionObservers on this element. */
 	observers?: Set<IntersectionObserver>;
 };
 
@@ -22,6 +23,7 @@ export type $ScryGrimoire = {
  * with the required `callback`.
  */
 export type $ScryConfig = IntersectionObserverInit & {
+	/** Called on each intersection observation. */
 	callback: IntersectionObserverCallback;
 };
 

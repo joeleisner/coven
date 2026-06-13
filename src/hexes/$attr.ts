@@ -17,8 +17,11 @@ export type $AttrValue = string | number | boolean;
 
 /** Configuration accepted by `$attr`. */
 export type $AttrConfig<TValue extends $AttrValue> = {
+	/** The attribute (and property) name to bind. */
 	name: string;
+	/** The default value when the attribute is absent. Determines the reflected type. */
 	value: TValue;
+	/** Called with `(newValue, oldValue)` after each change. */
 	callback?: (newValue: TValue, oldValue: TValue) => void;
 };
 
