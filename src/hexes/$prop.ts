@@ -2,7 +2,7 @@
  * @module
  * {@link $prop} — reactive property definition. Installs a get/set property
  * on an element that fires a callback on change and supports `readonly`
- * enforcement via `CovenError`.
+ * enforcement via `$assert`.
  */
 import { $assert } from '../charms/$assert.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
