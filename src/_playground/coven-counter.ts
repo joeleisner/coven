@@ -1,8 +1,8 @@
 import './coven-counter.css';
 
 import { Familiar } from '@src/mod.ts';
-import { $attr, $on, $shdw } from '@src/hexes/mod.ts';
-import { $define, $emit } from '@src/charms/mod.ts';
+import { $attr, $shdw } from '@src/hexes/mod.ts';
+import { $define, $emit, $on } from '@src/charms/mod.ts';
 
 $define(
 	'coven-counter',
@@ -26,11 +26,12 @@ $define(
 				},
 			});
 
-			const dec = this.shadowRoot!.querySelector<HTMLElement>('[part="dec"]')!;
-			const inc = this.shadowRoot!.querySelector<HTMLElement>('[part="inc"]')!;
+			const dec = $shdw.root(this)!.querySelector<HTMLElement>('[part="dec"]')!;
+			const inc = $shdw.root(this)!.querySelector<HTMLElement>('[part="inc"]')!;
 
 			$on(dec, {
 				type: 'click',
+				signal: this.signal,
 				callback: () => {
 					this.count--;
 					$emit(this, { name: 'change', detail: `decremented to ${this.count}` });
@@ -39,6 +40,7 @@ $define(
 
 			$on(inc, {
 				type: 'click',
+				signal: this.signal,
 				callback: () => {
 					this.count++;
 					$emit(this, { name: 'change', detail: `incremented to ${this.count}` });

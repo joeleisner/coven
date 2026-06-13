@@ -1,4 +1,5 @@
 import { $bewitch } from './hexes/$bewitch.ts';
+import { $soul } from './hexes/$soul.ts';
 
 /**
  * Coven's canonical custom-element base class. Owns lifecycle hooks
@@ -11,18 +12,19 @@ import { $bewitch } from './hexes/$bewitch.ts';
  * renews the signal on reconnect.
  *
  * @see {@link $bewitch}
+ * @see {@link $soul}
  *
  * @example
  * ```ts ignore
- * import { Familiar, $define, $on } from '@joeleisner/coven';
+ * import { Familiar, charms } from '@joeleisner/coven';
  *
  * class MyButton extends Familiar {
  * 	connected(signal: AbortSignal) {
- * 		$on(this, { type: 'click', callback: () => {}, signal });
+ * 		charms.$on(this, { type: 'click', callback: () => {}, signal });
  * 	}
  * }
  *
- * $define('my-button', MyButton);
+ * charms.$define('my-button', MyButton);
  * ```
  */
 export abstract class Familiar extends HTMLElement {
@@ -43,25 +45,10 @@ export abstract class Familiar extends HTMLElement {
 	connectedCallback(): void {
 		if (this.signal.aborted) $bewitch.renew(this);
 
-		const connect = () => {
-			this.connected?.(this.signal);
-			if (typeof this.disconnected === 'function') {
-				this.signal.addEventListener(
-					'abort',
-					() => this.disconnected!(),
-					{ once: true },
-				);
-			}
-		};
-
-		if (document.readyState !== 'loading') {
-			connect();
-		} else {
-			document.addEventListener('DOMContentLoaded', connect, {
-				once: true,
-				signal: this.signal,
-			});
-		}
+		$soul(this, {
+			connected: this.connected?.bind(this),
+			disconnected: this.disconnected?.bind(this),
+		});
 	}
 
 	disconnectedCallback(): void {

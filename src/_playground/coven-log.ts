@@ -7,23 +7,27 @@ import { $define } from '@src/charms/mod.ts';
 $define(
 	'coven-log',
 	class CovenLog extends Familiar {
-		#listenerCtrl: AbortController | null = null;
+		declare cap: number;
+		declare listen: string;
+
 		#cap = 0;
+		#listenerCtrl: AbortController | null = null;
 
 		override connected(signal: AbortSignal): void {
-			const initialCap = $attr<number>(this, {
+			const cap = $attr<number>(this, {
 				name: 'cap',
 				value: 0,
 				callback: (value) => this.#updateCap(value),
 			});
-			this.#updateCap(initialCap);
+			this.#updateCap(cap);
 
-			const initial = $attr<string>(this, {
+			const events = $attr<string>(this, {
 				name: 'listen',
 				value: '',
 				callback: (value) => this.#rebind(value),
 			});
-			this.#rebind(initial);
+			this.#rebind(events);
+
 			signal.addEventListener('abort', () => {
 				this.#listenerCtrl?.abort();
 			}, { once: true });

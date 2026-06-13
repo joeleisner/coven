@@ -10,7 +10,7 @@ type $SoulGrimoire = {
 };
 
 export type $SoulOptions = {
-	connected: (signal: AbortSignal) => void;
+	connected?: (signal: AbortSignal) => void;
 	disconnected?: () => void;
 };
 
@@ -25,10 +25,10 @@ export type $SoulOptions = {
  *
  * @example
  * ```ts ignore
- * import { $soul } from '@joeleisner/coven';
+ * import { hexes } from '@joeleisner/coven';
  *
  * const el = document.querySelector('div')!;
- * $soul(el, {
+ * hexes.$soul(el, {
  *   connected: (signal) => {
  *     // runs when DOM is ready
  *   },
@@ -52,7 +52,7 @@ export function $soul(
 	store.bound = true;
 
 	$wake(element, () => {
-		connected(signal);
+		connected?.(signal);
 		if (disconnected) {
 			signal.addEventListener('abort', disconnected, { once: true });
 		}

@@ -62,3 +62,17 @@ test('$soul hex writes a grimoire slot', () => {
 		`expected $soul slot; got ${symbols.map((s) => s.description).join(', ')}`,
 	);
 });
+
+test('$soul hex works with no callbacks provided', () => {
+	const el = document.createElement('div');
+	$soul(el, {});
+	assert($bewitch.signal(el) !== undefined);
+});
+
+test('$soul hex works with only disconnected provided', () => {
+	const el = document.createElement('div');
+	let disconnected = false;
+	$soul(el, { disconnected: () => { disconnected = true; } });
+	$bewitch.abort(el);
+	assertEquals(disconnected, true);
+});
