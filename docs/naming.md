@@ -47,6 +47,8 @@ throws, defines, emits).
 - **`$soul`**: full connected/disconnected lifecycle for plain elements.
   Like a Familiar's lifecycle, but for any HTMLElement.
 - **`$template`**: cached `<template>` factory, shared per class.
+- **`$morph`**: watch an element resize. To morph is to change shape; here,
+  it's `ResizeObserver`. Completes the observer trio alongside `$mut` and `$scry`.
 
 ## The charms
 
@@ -80,6 +82,9 @@ full connected/disconnected lifecycle.
 
 A few names are shortened (`$mut`, `$shdw`) because they're called
 often. The full meaning lives in the JSDoc and here.
+
+`$scry`'s internal types were renamed from `$Int*` to `$Scry*` in v0.3.0
+to reflect the hex's current name (it was previously called `$int`).
 
 ## Inspiration
 

@@ -120,6 +120,7 @@ same.
 | `$template` | Cached `<template>` factory, shared per class, auto-bewitches.      |
 | `$on`       | Type-safe addEventListener; auto-wires the element's signal.        |
 | `$soul`     | Full connected/disconnected lifecycle for plain elements.           |
+| `$morph`    | Wraps ResizeObserver. Completes the observer trio alongside `$mut` and `$scry`. |
 
 **Charms** (`import { charms } from '@joeleisner/coven'` or `import { ... } from '@joeleisner/coven/charms'`):
 
