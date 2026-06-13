@@ -16,10 +16,10 @@ hard rule. In practice, a typical hex:
 import { $bewitch } from './$bewitch.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-const $MY_HEX_GRIMOIRE_SYMBOL = Symbol('$myHex');
+export const $MY_HEX_GRIMOIRE_SYMBOL = Symbol('$myHex');
 
 type $MyHexGrimoire = {
-	values?: Set<string>;
+    values?: Set<string>;
 };
 
 /**
@@ -29,37 +29,34 @@ type $MyHexGrimoire = {
  * @param config  - Hex configuration.
  */
 export function $myHex(element: HTMLElement, config: { name: string }): void {
-	const signal = $bewitch(element);
-	const store = grimoire<$MyHexGrimoire>(
-		element as GrimoireElement,
-		$MY_HEX_GRIMOIRE_SYMBOL,
-	);
-	store.values ??= new Set();
-	store.values.add(config.name);
+    const signal = $bewitch(element);
+    const store = grimoire<$MyHexGrimoire>(
+        element as GrimoireElement,
+        $MY_HEX_GRIMOIRE_SYMBOL,
+    );
+    store.values ??= new Set();
+    store.values.add(config.name);
 
-	signal.addEventListener('abort', () => {
-		store.values?.delete(config.name);
-	}, { once: true });
+    signal.addEventListener('abort', () => {
+        store.values?.delete(config.name);
+    }, { once: true });
 }
 
 /**
  * Read the names tracked by $myHex.
  */
 $myHex.list = (element: HTMLElement): string[] => [
-	...(grimoire<$MyHexGrimoire>(
-		element as GrimoireElement,
-		$MY_HEX_GRIMOIRE_SYMBOL,
-	).values ?? new Set<string>()),
+    ...(grimoire<$MyHexGrimoire>(
+        element as GrimoireElement,
+        $MY_HEX_GRIMOIRE_SYMBOL,
+    ).values ?? new Set<string>()),
 ];
 
 export default $myHex;
 ```
 
-Not every hex needs a signal. `$template` and `$shdw` (see `src/hexes/`)
-are signal-free: they only store read-only state, so they skip step 3
-above and don't call `$bewitch` directly. `$shdw` does end up bewitching
-the shadow root indirectly because it uses `$mut` against it, but the
-hex itself doesn't reach for `$bewitch`.
+The grimoire symbol is exported so advanced callers can read the raw
+store. Mark it `@advanced` in JSDoc to signal that it's an escape hatch.
 
 ## Sub-method conventions
 
@@ -73,6 +70,14 @@ hex itself doesn't reach for `$bewitch`.
 If your hex needs state shared across every instance of the same class
 (e.g. a template cache), use `grimoire.shared(element, type)` instead
 of `grimoire(element, type)`.
+
+## Twin-pair hexes
+
+`$on`, `$shdw`, and `$template` have charm twins with the same name.
+When writing a hex in this group, keep the hex's core operation inside
+the charm (pure logic, no grimoire, no bewitch), then call the charm
+from the hex after setting up the signal. This keeps both variants
+consistent and testable in isolation.
 
 ## Don't write a hex if…
 

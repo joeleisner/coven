@@ -1,0 +1,47 @@
+@scope (coven-counter) {
+	:scope {
+		display: flex;
+		gap: 0.5rem;
+		justify-content: center;
+		align-items: center;
+		font-size: 3rem;
+		font-weight: bold;
+	}
+
+	&::part(dec),
+	&::part(inc) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 2rem;
+		height: 2rem;
+		border: 1px solid var(--accent-color);
+		border-radius: 0.25rem;
+		background: transparent;
+		font-weight: bold;
+		font-size: 1.25rem;
+		color: var(--accent-color);
+		cursor: pointer;
+	}
+
+	/* Hover/focus must be flat — CSS nesting cannot re-enter a ::part() rule */
+	&::part(dec):hover,
+	&::part(dec):focus-visible {
+		background: var(--pico-color-pink-500);
+		color: var(--pico-color-white);
+	}
+
+	&::part(inc):hover,
+	&::part(inc):focus-visible {
+		background: var(--pico-color-jade-500);
+		color: var(--pico-color-white);
+	}
+
+	&::part(dec) {
+		--accent-color: var(--pico-color-pink-500);
+	}
+
+	&::part(inc) {
+		--accent-color: var(--pico-color-jade-500);
+	}
+}

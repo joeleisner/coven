@@ -2,6 +2,7 @@ import { test } from '../_test/setup.ts';
 import { assert, assertEquals } from '@std/assert';
 import { $shdw } from './$shdw.ts';
 import { $mut } from './$mut.ts';
+import { $bewitch } from './$bewitch.ts';
 
 test('$shdw attaches a shadow root and populates it', () => {
 	const el = document.createElement('div');
@@ -111,4 +112,13 @@ test('$shdw double-call does not multiply $mut listeners on the shadow root', ()
 
 	const listeners = $mut.listeners($shdw.root(el)!, 'childList');
 	assertEquals(listeners?.size, 1, 'shadow root has exactly one childList listener');
+});
+
+test('$shdw hex bewitches the element (all hexes guarantee this)', () => {
+	const el = document.createElement('div');
+	$shdw(el, '<i></i>');
+	assert(
+		$bewitch.signal(el) !== undefined,
+		'element should be bewitched after $shdw hex',
+	);
 });
