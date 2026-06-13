@@ -26,5 +26,5 @@ test('$morph.disconnect(element) disconnects all observers', () => {
 	};
 	$morph.disconnect(el);
 	assert(disconnected);
-	assertEquals($morph.observers(el)?.size, 0);
+	assertEquals($morph.observers(el), undefined);
 });

@@ -105,7 +105,7 @@ $scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined 
 $scry.disconnect = (element: HTMLElement): void => {
 	const store = grimoire<$ScryGrimoire>(element, $SCRY_GRIMOIRE_SYMBOL);
 	store.observers?.forEach((o) => o.disconnect());
-	store.observers?.clear();
+	store.observers = undefined;
 };
 
 export default $scry;

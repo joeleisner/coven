@@ -100,7 +100,7 @@ $morph.observers = (element: HTMLElement): Set<ResizeObserver> | undefined =>
 $morph.disconnect = (element: HTMLElement): void => {
 	const store = grimoire<$MorphGrimoire>(element, $MORPH_GRIMOIRE_SYMBOL);
 	store.observers?.forEach((o) => o.disconnect());
-	store.observers?.clear();
+	store.observers = undefined;
 };
 
 export default $morph;
