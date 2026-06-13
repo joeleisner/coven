@@ -1,4 +1,4 @@
-@scope(coven-counter) {
+@scope (coven-counter) {
 	:scope {
 		display: flex;
 		gap: 0.5rem;

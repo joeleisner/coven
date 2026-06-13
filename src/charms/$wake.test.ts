@@ -33,7 +33,9 @@ test('$wake passes an optional signal to the DOMContentLoaded listener', () => {
 	const el = document.createElement('div');
 	const ctrl = new AbortController();
 	let ran = false;
-	$wake(el, () => { ran = true; }, ctrl.signal);
+	$wake(el, () => {
+		ran = true;
+	}, ctrl.signal);
 	// readyState === 'complete' in happy-dom, so callback still runs immediately
 	assertEquals(ran, true);
 });

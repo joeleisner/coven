@@ -14,7 +14,9 @@ test('$soul hex runs connected callback immediately (DOM ready in test env)', ()
 	const el = document.createElement('div');
 	let ran = false;
 	$soul(el, {
-		connected: () => { ran = true; },
+		connected: () => {
+			ran = true;
+		},
 	});
 	assertEquals(ran, true);
 });
@@ -23,7 +25,9 @@ test('$soul hex passes the element signal to the connected callback', () => {
 	const el = document.createElement('div');
 	let received: AbortSignal | undefined;
 	$soul(el, {
-		connected: (signal) => { received = signal; },
+		connected: (signal) => {
+			received = signal;
+		},
 	});
 	assert(received instanceof AbortSignal);
 	assertEquals(received, $bewitch.signal(el));
@@ -34,7 +38,9 @@ test('$soul hex fires disconnected when the signal aborts', () => {
 	let disconnected = false;
 	$soul(el, {
 		connected: () => {},
-		disconnected: () => { disconnected = true; },
+		disconnected: () => {
+			disconnected = true;
+		},
 	});
 	$bewitch.abort(el);
 	assertEquals(disconnected, true);
@@ -72,7 +78,11 @@ test('$soul hex works with no callbacks provided', () => {
 test('$soul hex works with only disconnected provided', () => {
 	const el = document.createElement('div');
 	let disconnected = false;
-	$soul(el, { disconnected: () => { disconnected = true; } });
+	$soul(el, {
+		disconnected: () => {
+			disconnected = true;
+		},
+	});
 	$bewitch.abort(el);
 	assertEquals(disconnected, true);
 });

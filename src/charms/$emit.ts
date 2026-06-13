@@ -33,7 +33,9 @@ export function $emit<
 ): boolean {
 	const tag = element.tagName.toLowerCase();
 	const type = options.name ? `${tag}:${options.name}` : tag;
-	const merged = Object.assign({}, defaultEmitOptions, options) as EventInit | CustomEventInit<TDetail>;
+	const merged = Object.assign({}, defaultEmitOptions, options) as
+		| EventInit
+		| CustomEventInit<TDetail>;
 
 	const event = 'detail' in merged
 		? new CustomEvent(type, merged as CustomEventInit<TDetail>)
