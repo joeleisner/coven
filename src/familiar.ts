@@ -28,8 +28,27 @@ import { $soul } from './hexes/$soul.ts';
  * ```
  */
 export abstract class Familiar extends HTMLElement {
+	/**
+	 * Called once during construction, before the element is connected to the
+	 * DOM. Use for setup that does not depend on the live document (e.g.
+	 * initialising state, attaching a shadow root). The signal is live but
+	 * will not be aborted until the first disconnect.
+	 */
 	setup?(signal: AbortSignal): void;
+
+	/**
+	 * Called each time the element is inserted into the DOM, deferred to
+	 * DOM-ready via `$wake`. On reconnection the signal is renewed before this
+	 * runs, so any listeners registered here are automatically cleaned up when
+	 * the element is later removed.
+	 */
 	connected?(signal: AbortSignal): void;
+
+	/**
+	 * Called when the element is removed from the DOM. The signal is already
+	 * aborted by the time this runs, so any abort-based cleanup has already
+	 * fired. Use for teardown that cannot be expressed as an abort listener.
+	 */
 	disconnected?(): void;
 
 	constructor() {
@@ -38,10 +57,15 @@ export abstract class Familiar extends HTMLElement {
 		this.setup?.(this.signal);
 	}
 
+	/**
+	 * The AbortSignal owned by this element. Aborted on disconnect and
+	 * replaced with a fresh signal on every subsequent reconnect.
+	 */
 	get signal(): AbortSignal {
 		return $bewitch.signal(this)!;
 	}
 
+	/** @internal Delegates to `$soul`; subclasses should implement `connected` instead. */
 	connectedCallback(): void {
 		if (this.signal.aborted) $bewitch.renew(this);
 
@@ -51,6 +75,7 @@ export abstract class Familiar extends HTMLElement {
 		});
 	}
 
+	/** @internal Aborts the owned signal; subclasses should implement `disconnected` instead. */
 	disconnectedCallback(): void {
 		$bewitch.abort(this);
 	}
