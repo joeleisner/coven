@@ -8,7 +8,11 @@ import { $bewitch } from './$bewitch.ts';
 import { $wake } from '../charms/$wake.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-/** @advanced Direct access to $soul's grimoire slot. */
+/**
+ * Direct access to $soul's grimoire slot. Identifies the per-element state
+ * bucket used internally by {@link $soul}.
+ * @advanced
+ */
 export const $SOUL_GRIMOIRE_SYMBOL = Symbol('$soul');
 
 type $SoulGrimoire = {

@@ -6,11 +6,13 @@
  */
 const GRIMOIRE_SYMBOL = Symbol('grimoire');
 
-type Grimoire = {
+/** @internal Symbol-keyed slot map stored on each bewitched node. */
+export type Grimoire = {
 	[key: symbol]: Record<string, unknown>;
 };
 
-type GrimoireCarrier = {
+/** @internal Mixin that carries the grimoire bag on a DOM node. */
+export type GrimoireCarrier = {
 	[GRIMOIRE_SYMBOL]?: Grimoire;
 };
 
@@ -56,6 +58,7 @@ function readSlot<TInterface extends Record<string, unknown>>(
  * ```
  */
 export function grimoire(element: GrimoireElement): Grimoire;
+/** Reads (and lazily initializes) the typed slot identified by `type` from the element's grimoire. */
 export function grimoire<TInterface extends Record<string, unknown>>(
 	element: GrimoireElement,
 	type: symbol,

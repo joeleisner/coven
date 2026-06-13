@@ -7,11 +7,16 @@
 import { grimoire } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 
-/** @advanced Direct access to $scry's grimoire slot. */
+/**
+ * Direct access to $scry's grimoire slot. Identifies the per-element state
+ * bucket used internally by {@link $scry}.
+ * @advanced
+ */
 export const $SCRY_GRIMOIRE_SYMBOL = Symbol('$scry');
 
 /**
- * @advanced Per-element state stored under {@link $SCRY_GRIMOIRE_SYMBOL}.
+ * Per-element state stored under {@link $SCRY_GRIMOIRE_SYMBOL}.
+ * @advanced
  */
 export type $ScryGrimoire = {
 	/** The set of active IntersectionObservers on this element. */

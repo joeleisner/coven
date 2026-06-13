@@ -7,11 +7,16 @@
 import { grimoire } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 
-/** @advanced Direct access to $morph's grimoire slot. */
+/**
+ * Direct access to $morph's grimoire slot. Identifies the per-element state
+ * bucket used internally by {@link $morph}.
+ * @advanced
+ */
 export const $MORPH_GRIMOIRE_SYMBOL = Symbol('$morph');
 
 /**
- * @advanced Per-element state stored under {@link $MORPH_GRIMOIRE_SYMBOL}.
+ * Per-element state stored under {@link $MORPH_GRIMOIRE_SYMBOL}.
+ * @advanced
  */
 export type $MorphGrimoire = {
 	/** The set of active ResizeObservers on this element. */

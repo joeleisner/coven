@@ -31,10 +31,17 @@ export type $MutCallbacks = {
 	characterData: (newValue: string | null) => void;
 };
 
-/** @advanced Direct access to $mut's grimoire slot. */
+/**
+ * Direct access to $mut's grimoire slot. Identifies the per-node state
+ * bucket used internally by {@link $mut}.
+ * @advanced
+ */
 export const $MUT_GRIMOIRE_SYMBOL = Symbol('$mut');
 
-/** @advanced Per-node state stored under {@link $MUT_GRIMOIRE_SYMBOL}. */
+/**
+ * Per-node state stored under {@link $MUT_GRIMOIRE_SYMBOL}.
+ * @advanced
+ */
 export type $MutGrimoire = {
 	/** The shared MutationObserver for this node. */
 	observer?: MutationObserver;
@@ -90,10 +97,12 @@ export function $mut(
 	node: Node,
 	config: $MutConfig<'attributes'>,
 ): MutationObserver;
+/** Observes `childList` mutations on `node` via a shared `MutationObserver`. */
 export function $mut(
 	node: Node,
 	config: $MutConfig<'childList'>,
 ): MutationObserver;
+/** Observes `characterData` mutations on `node` via a shared `MutationObserver`. */
 export function $mut(
 	node: Node,
 	config: $MutConfig<'characterData'>,

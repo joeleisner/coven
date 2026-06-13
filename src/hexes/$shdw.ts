@@ -10,7 +10,11 @@ import { $template } from './$template.ts';
 import { $mut } from './$mut.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-/** @advanced Direct access to $shdw's grimoire slot. */
+/**
+ * Direct access to $shdw's grimoire slot. Identifies the per-element state
+ * bucket used internally by {@link $shdw}.
+ * @advanced
+ */
 export const $SHDW_GRIMOIRE_SYMBOL = Symbol('$shdw');
 
 type $ShdwGrimoire = {

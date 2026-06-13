@@ -8,7 +8,11 @@ import { $template as $templateCharm } from '../charms/$template.ts';
 import { $bewitch } from './$bewitch.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-/** @advanced Direct access to $template's grimoire slot. */
+/**
+ * Direct access to $template's grimoire slot. Identifies the per-class state
+ * bucket used internally by {@link $template}.
+ * @advanced
+ */
 export const $TEMPLATE_GRIMOIRE_SYMBOL = Symbol('$template');
 
 type $TemplateGrimoire = {
