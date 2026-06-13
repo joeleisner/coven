@@ -1,11 +1,13 @@
 import { grimoire } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 
-/** Grimoire slot key for `$scry`'s per-element state. */
-export const $INT_GRIMOIRE_SYMBOL = Symbol('$int');
+/** @advanced Direct access to $scry's grimoire slot. */
+export const $SCRY_GRIMOIRE_SYMBOL = Symbol('$scry');
 
-/** Per-element state stored under `$INT_GRIMOIRE_SYMBOL`. */
-export type $IntGrimoire = {
+/**
+ * @advanced Per-element state stored under {@link $SCRY_GRIMOIRE_SYMBOL}.
+ */
+export type $ScryGrimoire = {
 	observers?: Set<IntersectionObserver>;
 };
 
@@ -13,7 +15,7 @@ export type $IntGrimoire = {
  * Configuration accepted by `$scry`. Extends `IntersectionObserverInit`
  * with the required `callback`.
  */
-export type $IntConfig = IntersectionObserverInit & {
+export type $ScryConfig = IntersectionObserverInit & {
 	callback: IntersectionObserverCallback;
 };
 
@@ -44,10 +46,10 @@ export function $scry(
 	{
 		callback,
 		...init
-	}: $IntConfig,
+	}: $ScryConfig,
 ): IntersectionObserver {
 	const signal = $bewitch(element);
-	const store = grimoire<$IntGrimoire>(element, $INT_GRIMOIRE_SYMBOL);
+	const store = grimoire<$ScryGrimoire>(element, $SCRY_GRIMOIRE_SYMBOL);
 
 	store.observers ??= new Set();
 
@@ -79,7 +81,7 @@ export function $scry(
  * @returns The `Set` of observers, or `undefined`.
  */
 $scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined =>
-	grimoire<$IntGrimoire>(element, $INT_GRIMOIRE_SYMBOL).observers;
+	grimoire<$ScryGrimoire>(element, $SCRY_GRIMOIRE_SYMBOL).observers;
 
 /**
  * Disconnects every `IntersectionObserver` registered for this element
@@ -88,7 +90,7 @@ $scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined 
  * @param element - The element whose observers should be disconnected.
  */
 $scry.disconnect = (element: HTMLElement): void => {
-	const store = grimoire<$IntGrimoire>(element, $INT_GRIMOIRE_SYMBOL);
+	const store = grimoire<$ScryGrimoire>(element, $SCRY_GRIMOIRE_SYMBOL);
 	store.observers?.forEach((o) => o.disconnect());
 	store.observers?.clear();
 };
