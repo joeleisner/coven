@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $bewitch} — binds an {@link AbortSignal} to any DOM node, making it
+ * ready for hexes. The foundation every other hex builds on. Also exposes
+ * `.signal`, `.abort`, and `.renew` for lifecycle control.
+ */
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
 const $BEWITCH_GRIMOIRE_SYMBOL = Symbol('$bewitch');

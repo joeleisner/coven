@@ -1,30 +1,51 @@
+/**
+ * @module
+ * {@link $mut} — shared {@link MutationObserver} binding. Subscribes to DOM
+ * mutations on a node with automatic cleanup via `$bewitch`. Multiple
+ * callbacks for the same node share one underlying observer.
+ */
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 
 /** Maps each observable mutation type to the shape of its emitted value. */
 export type $MutValueMap = {
+	/** The new attribute value (or `null` when removed) for attribute mutations. */
 	attributes: string | null;
+	/** The current child node list for childList mutations. */
 	childList: NodeListOf<ChildNode>;
+	/** The new text content (or `null`) for characterData mutations. */
 	characterData: string | null;
 };
 
 /** Per-type callback signatures used by `$mut`. */
 export type $MutCallbacks = {
+	/** Fires with the attribute name, new value, and old value on each attribute change. */
 	attributes: (
 		attr: string,
 		newValue: string | null,
 		oldValue: string | null,
 	) => void;
+	/** Fires with the updated child node list on each childList change. */
 	childList: (newValue: NodeListOf<ChildNode>) => void;
+	/** Fires with the new text content on each characterData change. */
 	characterData: (newValue: string | null) => void;
 };
 
-/** Grimoire slot key for `$mut`'s per-node state. */
+/**
+ * Direct access to $mut's grimoire slot. Identifies the per-node state
+ * bucket used internally by {@link $mut}.
+ * @advanced
+ */
 export const $MUT_GRIMOIRE_SYMBOL = Symbol('$mut');
 
-/** Per-node state stored under `$MUT_GRIMOIRE_SYMBOL`. */
+/**
+ * Per-node state stored under {@link $MUT_GRIMOIRE_SYMBOL}.
+ * @advanced
+ */
 export type $MutGrimoire = {
+	/** The shared MutationObserver for this node. */
 	observer?: MutationObserver;
+	/** Per-type sets of registered callbacks. */
 	listeners?: {
 		[TType in keyof $MutValueMap]?: Set<$MutCallbacks[TType]>;
 	};
@@ -34,8 +55,11 @@ export type $MutGrimoire = {
 export type $MutConfig<
 	TType extends keyof $MutValueMap = keyof $MutValueMap,
 > = {
+	/** Which mutation type to observe (`'attributes'` | `'childList'` | `'characterData'`). */
 	type: TType;
+	/** Called on each observed mutation of this type. */
 	callback: $MutCallbacks[TType];
+	/** When `true`, also observes descendant nodes. Forwarded to `MutationObserverInit`. */
 	subtree?: boolean;
 };
 
@@ -73,10 +97,12 @@ export function $mut(
 	node: Node,
 	config: $MutConfig<'attributes'>,
 ): MutationObserver;
+/** Observes `childList` mutations on `node` via a shared `MutationObserver`. */
 export function $mut(
 	node: Node,
 	config: $MutConfig<'childList'>,
 ): MutationObserver;
+/** Observes `characterData` mutations on `node` via a shared `MutationObserver`. */
 export function $mut(
 	node: Node,
 	config: $MutConfig<'characterData'>,

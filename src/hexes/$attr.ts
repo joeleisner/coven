@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $attr} — two-way property/attribute binding. Keeps a component
+ * property and its HTML attribute in sync in both directions, with an
+ * optional change callback.
+ */
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 import $mut from './$mut.ts';
@@ -11,8 +17,11 @@ export type $AttrValue = string | number | boolean;
 
 /** Configuration accepted by `$attr`. */
 export type $AttrConfig<TValue extends $AttrValue> = {
+	/** The attribute (and property) name to bind. */
 	name: string;
+	/** The default value when the attribute is absent. Determines the reflected type. */
 	value: TValue;
+	/** Called with `(newValue, oldValue)` after each change. */
 	callback?: (newValue: TValue, oldValue: TValue) => void;
 };
 

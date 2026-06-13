@@ -1,3 +1,9 @@
+/**
+ * @module
+ * The {@link Familiar} base class — Coven's canonical custom-element
+ * foundation. Provides `setup`, `connected`, and `disconnected` lifecycle
+ * hooks and an owned {@link AbortSignal} managed by `$bewitch`.
+ */
 import { $bewitch } from './hexes/$bewitch.ts';
 import { $soul } from './hexes/$soul.ts';
 

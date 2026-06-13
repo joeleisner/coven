@@ -26,5 +26,5 @@ test('$scry.disconnect(element) disconnects all observers', () => {
 	};
 	$scry.disconnect(el);
 	assert(disconnected);
-	assertEquals($scry.observers(el)?.size, 0);
+	assertEquals($scry.observers(el), undefined);
 });

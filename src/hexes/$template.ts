@@ -1,8 +1,18 @@
+/**
+ * @module
+ * {@link $template} — class-shared cached `<template>` factory. Parses an
+ * HTML string once per element class and reuses the element across all
+ * instances. The hex counterpart to the bare `charms.$template`.
+ */
 import { $template as $templateCharm } from '../charms/$template.ts';
 import { $bewitch } from './$bewitch.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-/** @advanced Direct access to $template's grimoire slot. */
+/**
+ * Direct access to $template's grimoire slot. Identifies the per-class state
+ * bucket used internally by {@link $template}.
+ * @advanced
+ */
 export const $TEMPLATE_GRIMOIRE_SYMBOL = Symbol('$template');
 
 type $TemplateGrimoire = {

@@ -1,16 +1,35 @@
+/**
+ * @module
+ * {@link $soul} — full connected/disconnected lifecycle for plain elements.
+ * Wraps `$bewitch` and `$wake` to deliver the same lifecycle as
+ * {@link Familiar} to any `HTMLElement`.
+ */
 import { $bewitch } from './$bewitch.ts';
 import { $wake } from '../charms/$wake.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
-/** @advanced Direct access to $soul's grimoire slot. */
+/**
+ * Direct access to $soul's grimoire slot. Identifies the per-element state
+ * bucket used internally by {@link $soul}.
+ * @advanced
+ */
 export const $SOUL_GRIMOIRE_SYMBOL = Symbol('$soul');
 
 type $SoulGrimoire = {
 	bound?: boolean;
 };
 
+/** Lifecycle callbacks accepted by {@link $soul}. */
 export type $SoulOptions = {
+	/**
+	 * Called when the element is connected (or reconnected) to the DOM,
+	 * deferred to DOM-ready. Receives the current {@link AbortSignal}.
+	 */
 	connected?: (signal: AbortSignal) => void;
+	/**
+	 * Called when the element is disconnected from the DOM. The signal is
+	 * already aborted by the time this runs.
+	 */
 	disconnected?: () => void;
 };
 

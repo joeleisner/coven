@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $prop} — reactive property definition. Installs a get/set property
+ * on an element that fires a callback on change and supports `readonly`
+ * enforcement via `$assert`.
+ */
 import { $assert } from '../charms/$assert.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
@@ -19,9 +25,13 @@ type $PropGrimoire = {
 
 /** Configuration accepted by `$prop`. */
 export type $PropConfig<TValue = unknown> = {
+	/** The property name to install on the element. */
 	name: string;
+	/** The initial value for the property. */
 	value: TValue;
+	/** Called with `(newValue, oldValue)` after each change. */
 	callback?: $PropCallback<TValue>;
+	/** When `true`, throws a `CovenError` on write attempts. */
 	readonly?: boolean;
 };
 

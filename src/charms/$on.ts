@@ -1,4 +1,11 @@
 /**
+ * @module
+ * {@link $on} (charm) — type-safe `addEventListener` wrapper. Pass `signal`
+ * to opt into automatic cleanup. Use the hex version (`hexes.$on`) for
+ * automatic signal wiring via `$bewitch`.
+ */
+
+/**
  * Configuration for `$on`. `TDetail` narrows the event to a
  * `CustomEvent<TDetail>`; omit it for a plain `Event`.
  */
@@ -6,8 +13,11 @@ export type $OnOptions<
 	TDetail extends unknown | never = never,
 	TEvent = [TDetail] extends [never] ? Event : CustomEvent<TDetail>,
 > = {
+	/** The event type string to listen for (e.g. `'click'`, `'my-el:change'`). */
 	type: string;
+	/** Handler invoked each time the event fires. */
 	callback: (event: TEvent) => void;
+	/** Optional signal; when aborted the listener is removed automatically. */
 	signal?: AbortSignal;
 };
 

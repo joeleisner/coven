@@ -9,6 +9,7 @@ const globals = [
 	'customElements',
 	'MutationObserver',
 	'IntersectionObserver',
+	'ResizeObserver',
 	'Event',
 	'CustomEvent',
 	'Node',

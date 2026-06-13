@@ -43,17 +43,19 @@ helpers and don't want to rewrite your components, you can.
 ## Quick example (using `Familiar`)
 
 ```ts
-import { Familiar, hexes, charms } from '@joeleisner/coven';
+import { Familiar } from '@joeleisner/coven';
+import { $shdw, $attr } from '@joeleisner/coven/hexes';
+import { $define } from '@joeleisner/coven/charms';
 
 class Counter extends Familiar {
 	declare count: number;
 
 	setup() {
-		hexes.$shdw(this, '<button part="btn"><slot></slot> <span part="n">0</span></button>');
+		$shdw(this, '<button part="btn"><slot></slot> <span part="n">0</span></button>');
 	}
 
 	connected() {
-		hexes.$attr<number>(this, {
+		$attr<number>(this, {
 			name: 'count',
 			value: 0,
 			callback: (v) => {
@@ -63,7 +65,7 @@ class Counter extends Familiar {
 	}
 }
 
-charms.$define('my-counter', Counter);
+$define('my-counter', Counter);
 ```
 
 ## Concepts (the magical naming guide)
@@ -120,6 +122,7 @@ same.
 | `$template` | Cached `<template>` factory, shared per class, auto-bewitches.      |
 | `$on`       | Type-safe addEventListener; auto-wires the element's signal.        |
 | `$soul`     | Full connected/disconnected lifecycle for plain elements.           |
+| `$morph`    | Wraps ResizeObserver. Completes the observer trio alongside `$mut` and `$scry`. |
 
 **Charms** (`import { charms } from '@joeleisner/coven'` or `import { ... } from '@joeleisner/coven/charms'`):
 
