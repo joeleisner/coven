@@ -1,3 +1,9 @@
+/**
+ * @module
+ * The grimoire — per-element and per-class symbol-keyed storage. Every hex
+ * writes its bookkeeping here. Use {@link grimoire} for per-instance state
+ * and {@link grimoire.shared} for state shared across all instances of a class.
+ */
 const GRIMOIRE_SYMBOL = Symbol('grimoire');
 
 type Grimoire = {

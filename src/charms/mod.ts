@@ -1,3 +1,10 @@
+/**
+ * @module
+ * The charms namespace — stateless, grimoire-free helpers. Each charm takes
+ * an element as its first argument and has no per-element side effects.
+ * Import as `{ charms } from '@joeleisner/coven'` or directly from
+ * `@joeleisner/coven/charms`.
+ */
 export { $assert } from './$assert.ts';
 export { $define } from './$define.ts';
 export { $emit } from './$emit.ts';

@@ -1,3 +1,10 @@
+/**
+ * @module
+ * The hexes namespace — stateful bindings backed by the grimoire. Every hex
+ * calls `$bewitch` to obtain an {@link AbortSignal} for cleanup. Import as
+ * `{ hexes } from '@joeleisner/coven'` or directly from
+ * `@joeleisner/coven/hexes`.
+ */
 export { $attr } from './$attr.ts';
 export { $bewitch } from './$bewitch.ts';
 export { $morph } from './$morph.ts';

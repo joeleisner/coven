@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $shdw} — shadow root attachment with automatic `[part]` tracking
+ * and `exportparts` propagation. The hex counterpart to the bare
+ * `charms.$shdw`; auto-bewitches the element.
+ */
 import { $shdw as $shdwCharm } from '../charms/$shdw.ts';
 import { $bewitch } from './$bewitch.ts';
 import { $template } from './$template.ts';

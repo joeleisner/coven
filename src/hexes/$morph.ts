@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $morph} — {@link ResizeObserver} binding. Watch an element reshape
+ * with automatic cleanup via `$bewitch`. Completes the observer trio
+ * alongside `$mut` and `$scry`.
+ */
 import { grimoire } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 

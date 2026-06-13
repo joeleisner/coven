@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $scry} — {@link IntersectionObserver} binding. Observe an element's
+ * intersection with the viewport or a scroll container, with automatic
+ * cleanup via `$bewitch`.
+ */
 import { grimoire } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 

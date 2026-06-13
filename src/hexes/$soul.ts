@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $soul} — full connected/disconnected lifecycle for plain elements.
+ * Wraps `$bewitch` and `$wake` to deliver the same lifecycle as
+ * {@link Familiar} to any `HTMLElement`.
+ */
 import { $bewitch } from './$bewitch.ts';
 import { $wake } from '../charms/$wake.ts';
 import { grimoire, type GrimoireElement } from '../grimoire.ts';

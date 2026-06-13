@@ -1,3 +1,9 @@
+/**
+ * @module
+ * {@link $mut} — shared {@link MutationObserver} binding. Subscribes to DOM
+ * mutations on a node with automatic cleanup via `$bewitch`. Multiple
+ * callbacks for the same node share one underlying observer.
+ */
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 import { $bewitch } from './$bewitch.ts';
 

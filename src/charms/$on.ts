@@ -1,4 +1,11 @@
 /**
+ * @module
+ * {@link $on} (charm) — type-safe `addEventListener` wrapper. Pass `signal`
+ * to opt into automatic cleanup. Use the hex version (`hexes.$on`) for
+ * automatic signal wiring via `$bewitch`.
+ */
+
+/**
  * Configuration for `$on`. `TDetail` narrows the event to a
  * `CustomEvent<TDetail>`; omit it for a plain `Event`.
  */
