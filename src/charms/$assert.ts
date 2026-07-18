@@ -21,7 +21,7 @@ import { $error } from './$error.ts';
  * ```
  */
 export function $assert(
-	element: HTMLElement,
+	element: Element,
 	condition: unknown,
 	message: string,
 ): asserts condition {

@@ -43,7 +43,7 @@ type $TemplateGrimoire = {
  * ```
  */
 export function $template(
-	element: HTMLElement,
+	element: Element,
 	html: string,
 ): HTMLTemplateElement {
 	$bewitch(element);
@@ -69,7 +69,7 @@ export function $template(
  * @returns The cache map, or undefined if no template has been registered yet.
  */
 $template.cache = (
-	element: HTMLElement,
+	element: Element,
 ): Map<string, HTMLTemplateElement> | undefined =>
 	grimoire.shared<$TemplateGrimoire>(
 		element as GrimoireElement,
@@ -84,7 +84,7 @@ $template.cache = (
  * @returns A cloned DocumentFragment ready to append.
  */
 $template.clone = (
-	element: HTMLElement,
+	element: Element,
 	html: string,
 ): DocumentFragment => $template(element, html).content.cloneNode(true) as DocumentFragment;
 

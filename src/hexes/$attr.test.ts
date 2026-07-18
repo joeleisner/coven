@@ -25,3 +25,11 @@ test('$attr writes an audit slot to the grimoire', () => {
 	const found = symbols.some((s) => s.description === '$attr');
 	assert(found, 'expected a $attr grimoire slot');
 });
+
+test('$attr accepts an SVGElement target (Element widening)', () => {
+	const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	$attr(el, { name: 'data-flag', value: false });
+	// deno-lint-ignore no-explicit-any
+	(el as any)['data-flag'] = true;
+	assertEquals(el.getAttribute('data-flag'), '');
+});

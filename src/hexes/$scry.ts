@@ -55,7 +55,7 @@ export type $ScryConfig = IntersectionObserverInit & {
  * ```
  */
 export function $scry(
-	element: HTMLElement,
+	element: Element,
 	{
 		callback,
 		...init
@@ -93,7 +93,7 @@ export function $scry(
  * @param element - The element to look up.
  * @returns The `Set` of observers, or `undefined`.
  */
-$scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined =>
+$scry.observers = (element: Element): Set<IntersectionObserver> | undefined =>
 	grimoire<$ScryGrimoire>(element, $SCRY_GRIMOIRE_SYMBOL).observers;
 
 /**
@@ -102,7 +102,7 @@ $scry.observers = (element: HTMLElement): Set<IntersectionObserver> | undefined 
  *
  * @param element - The element whose observers should be disconnected.
  */
-$scry.disconnect = (element: HTMLElement): void => {
+$scry.disconnect = (element: Element): void => {
 	const store = grimoire<$ScryGrimoire>(element, $SCRY_GRIMOIRE_SYMBOL);
 	store.observers?.forEach((o) => o.disconnect());
 	store.observers = undefined;

@@ -53,7 +53,7 @@ export type $AttrConfig<TValue extends $AttrValue> = {
 export function $attr<
 	TValue extends $AttrValue = string,
 >(
-	element: HTMLElement,
+	element: Element,
 	{
 		name,
 		value,
@@ -147,7 +147,7 @@ export function $attr<
 /**
  * Returns the names of every attribute bound to the element via $attr.
  */
-$attr.list = (element: HTMLElement): string[] => [
+$attr.list = (element: Element): string[] => [
 	...(grimoire<$AttrGrimoire>(
 		element as GrimoireElement,
 		$ATTR_GRIMOIRE_SYMBOL,
