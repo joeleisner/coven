@@ -1,8 +1,8 @@
 /**
  * @module
- * {@link $bewitch} — binds an {@link AbortSignal} to any DOM node, making it
- * ready for hexes. The foundation every other hex builds on. Also exposes
- * `.signal`, `.abort`, and `.renew` for lifecycle control.
+ * {@link $bewitch} — binds an {@link AbortSignal} to any {@link EventTarget},
+ * making it ready for hexes. The foundation every other hex builds on. Also
+ * exposes `.signal`, `.abort`, and `.renew` for lifecycle control.
  */
 import { grimoire, type GrimoireElement } from '../grimoire.ts';
 
@@ -14,20 +14,22 @@ type $BewitchGrimoire = {
 };
 
 /**
- * Casts Coven's spell on a node, binding an AbortSignal to it so any
+ * Casts Coven's spell on a target, binding an AbortSignal to it so any
  * hex applied later can register cleanup. Idempotent — a second call
  * returns the same signal.
  *
- * Pass an existing signal to adopt it (the node is bewitched but
+ * Pass an existing signal to adopt it (the target is bewitched but
  * $bewitch does not own the lifecycle). Without an argument, $bewitch
  * creates and owns an AbortController.
  *
- * Accepts any `Node` — elements, shadow roots, text nodes, etc. Most
- * callers pass an `HTMLElement`, which still satisfies `Node`.
+ * Accepts any `EventTarget` — elements, shadow roots, text nodes, the
+ * document, the window, or any other object that implements
+ * `EventTarget`. Most callers pass an `HTMLElement`, which still
+ * satisfies `EventTarget`.
  *
- * @param node - The node to bewitch.
+ * @param node - The target to bewitch.
  * @param signal - Optional external signal to adopt.
- * @returns The node's signal.
+ * @returns The target's signal.
  *
  * @see {@link Familiar}
  *
@@ -41,7 +43,7 @@ type $BewitchGrimoire = {
  * ```
  */
 export function $bewitch(
-	node: Node,
+	node: EventTarget,
 	signal?: AbortSignal,
 ): AbortSignal {
 	const store = grimoire<$BewitchGrimoire>(
@@ -62,13 +64,13 @@ export function $bewitch(
 }
 
 /**
- * Returns the current signal bound to the node, or undefined if not
+ * Returns the current signal bound to the target, or undefined if not
  * yet bewitched. Read-only; does not trigger bewitching.
  *
- * @param node - The node to inspect.
- * @returns The node's signal, or undefined.
+ * @param node - The target to inspect.
+ * @returns The target's signal, or undefined.
  */
-$bewitch.signal = (node: Node): AbortSignal | undefined =>
+$bewitch.signal = (node: EventTarget): AbortSignal | undefined =>
 	grimoire<$BewitchGrimoire>(
 		node as GrimoireElement,
 		$BEWITCH_GRIMOIRE_SYMBOL,
@@ -77,9 +79,9 @@ $bewitch.signal = (node: Node): AbortSignal | undefined =>
 /**
  * Aborts the controller owned by $bewitch. No-op for adopted signals.
  *
- * @param node - The node whose owned signal should be aborted.
+ * @param node - The target whose owned signal should be aborted.
  */
-$bewitch.abort = (node: Node): void => {
+$bewitch.abort = (node: EventTarget): void => {
 	const store = grimoire<$BewitchGrimoire>(
 		node as GrimoireElement,
 		$BEWITCH_GRIMOIRE_SYMBOL,
@@ -91,16 +93,16 @@ $bewitch.abort = (node: Node): void => {
  * Aborts the current owned controller (if any) and creates a fresh
  * one. Returns the new signal. Used by Familiar on reconnection.
  *
- * Note: calling `.renew` on a node that was bewitched with an
+ * Note: calling `.renew` on a target that was bewitched with an
  * *adopted* external signal will replace it with a freshly-owned
  * controller. The original external signal is left untouched but is
- * no longer the node's tracked signal — any hex registered after
+ * no longer the target's tracked signal — any hex registered after
  * the renew will live on the new owned signal, not the original one.
  *
- * @param node - The node to renew.
+ * @param node - The target to renew.
  * @returns The new signal.
  */
-$bewitch.renew = (node: Node): AbortSignal => {
+$bewitch.renew = (node: EventTarget): AbortSignal => {
 	const store = grimoire<$BewitchGrimoire>(
 		node as GrimoireElement,
 		$BEWITCH_GRIMOIRE_SYMBOL,
