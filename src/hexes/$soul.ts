@@ -2,7 +2,7 @@
  * @module
  * {@link $soul} — full connected/disconnected lifecycle for plain elements.
  * Wraps `$bewitch` and `$wake` to deliver the same lifecycle as
- * {@link Familiar} to any `HTMLElement`.
+ * {@link Familiar} to any `EventTarget`.
  */
 import { $bewitch } from './$bewitch.ts';
 import { $wake } from '../charms/$wake.ts';
@@ -58,7 +58,7 @@ export type $SoulOptions = {
  * ```
  */
 export function $soul(
-	element: HTMLElement,
+	element: EventTarget,
 	{ connected, disconnected }: $SoulOptions,
 ): void {
 	const existing = $bewitch.signal(element);

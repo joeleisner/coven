@@ -32,7 +32,7 @@ export function $on<
 	TDetail extends unknown | never = never,
 	TEvent = [TDetail] extends [never] ? Event : CustomEvent<TDetail>,
 >(
-	element: HTMLElement,
+	element: EventTarget,
 	options: Omit<$OnOptions<TDetail, TEvent>, 'signal'>,
 ): void {
 	const signal = $bewitch(element);
