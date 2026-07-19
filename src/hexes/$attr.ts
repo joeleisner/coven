@@ -28,8 +28,11 @@ export type $AttrConfig<TValue extends $AttrValue> = {
 /**
  * Binds a property of a component to a same-named HTML attribute,
  * keeping the two in sync in both directions. The default value seeds
- * the property when the attribute is absent, and an optional callback
- * fires on every change. Internally combines `$prop` (for the property
+ * the property when the attribute is absent — and is reflected onto
+ * the DOM attribute if it was absent. An optional callback fires once
+ * at setup with the resolved initial value (as both `newValue` and
+ * `oldValue`, since there's no prior state), then again on every
+ * subsequent change. Internally combines `$prop` (for the property
  * surface) with `$mut` (for attribute observation).
  *
  * @param element - The component instance.
@@ -100,7 +103,8 @@ export function $attr<
 	let syncingFromAttribute = false;
 	let syncingFromProperty = false;
 
-	const initialAttributeValue = parseAttributeValue(element.getAttribute(name));
+	const rawAttributeValue = element.getAttribute(name);
+	const initialAttributeValue = parseAttributeValue(rawAttributeValue);
 
 	const initialValue = $prop(element, {
 		name,
@@ -120,6 +124,14 @@ export function $attr<
 			}
 		},
 	});
+
+	if (rawAttributeValue === null) {
+		reflectAttributeValue(initialValue);
+	}
+
+	if (callback && !signal.aborted) {
+		callback.call(element, initialValue, initialValue);
+	}
 
 	$mut(element, {
 		type: 'attributes',
