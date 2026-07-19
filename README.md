@@ -59,7 +59,7 @@ class Counter extends Familiar {
 			name: 'count',
 			value: 0,
 			callback: (v) => {
-				hexes.$shdw.root(this)!.querySelector('span')!.textContent = String(v);
+				$shdw.root(this)!.querySelector('span')!.textContent = String(v);
 			},
 		});
 	}
