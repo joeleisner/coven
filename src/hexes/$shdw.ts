@@ -35,7 +35,10 @@ function collectParts(root: ParentNode, into: Set<string>): void {
  * with the given HTML, and tracks every [part] attribute value inside
  * so the parts set can be inspected via $shdw.parts(element). New
  * children with [part] added later are tracked automatically through
- * an internal $mut subscription on the shadow root.
+ * an internal $mut subscription on the shadow root. Declarative
+ * shadow roots left un-promoted by non-streaming HTML parsing (see
+ * `charms.$shdw`) are promoted automatically, including closed-mode
+ * ones.
  *
  * @param component - The element to attach the shadow root to.
  * @param html - Optional HTML to populate the shadow with.
@@ -55,7 +58,7 @@ function collectParts(root: ParentNode, into: Set<string>): void {
  * ```
  */
 export function $shdw(
-	component: HTMLElement,
+	component: Element,
 	html?: HTMLTemplateElement | string,
 ): ShadowRoot {
 	$bewitch(component);
@@ -66,21 +69,20 @@ export function $shdw(
 		component as GrimoireElement,
 		$SHDW_GRIMOIRE_SYMBOL,
 	);
+	const firstCall = store.parts === undefined;
 	store.parts ??= new Set();
 
-	const firstCall = !component.shadowRoot;
+	const shadowRoot = $shdwCharm(component, html);
 
-	$shdwCharm(component, html);
-
-	collectParts(component.shadowRoot!, store.parts);
+	collectParts(shadowRoot, store.parts);
 
 	if (firstCall) {
 		// Stay in sync with late-added [part] values inside the shadow.
-		$mut(component.shadowRoot!, {
+		$mut(shadowRoot, {
 			type: 'childList',
 			subtree: true,
 			callback: () => {
-				collectParts(component.shadowRoot!, store.parts!);
+				collectParts(shadowRoot, store.parts!);
 				propagate(component);
 			},
 		});
@@ -88,7 +90,7 @@ export function $shdw(
 		queueMicrotask(() => propagate(component));
 	}
 
-	return component.shadowRoot!;
+	return shadowRoot;
 }
 
 /**
@@ -97,19 +99,21 @@ export function $shdw(
  * @param element - The host element.
  * @returns The set of tracked parts, or undefined if $shdw has not run on this element.
  */
-$shdw.parts = (element: HTMLElement): ReadonlySet<string> | undefined =>
+$shdw.parts = (element: Element): ReadonlySet<string> | undefined =>
 	grimoire<$ShdwGrimoire>(
 		element as GrimoireElement,
 		$SHDW_GRIMOIRE_SYMBOL,
 	).parts;
 
 /**
- * Returns the element's shadow root, or null if none is attached.
+ * Returns the element's shadow root, or null if none is attached (or
+ * if it was attached in closed mode, which is not observable via this
+ * accessor).
  *
  * @param element - The host element.
  * @returns The shadow root.
  */
-$shdw.root = (element: HTMLElement): ShadowRoot | null => element.shadowRoot;
+$shdw.root = (element: Element): ShadowRoot | null => element.shadowRoot;
 
 /**
  * Re-run exportparts propagation manually. Useful when shadow
@@ -117,9 +121,9 @@ $shdw.root = (element: HTMLElement): ShadowRoot | null => element.shadowRoot;
  *
  * @param element - The host element whose parts should be merged into its parent shadow host.
  */
-$shdw.propagate = (element: HTMLElement): void => propagate(element);
+$shdw.propagate = (element: Element): void => propagate(element);
 
-function propagate(element: HTMLElement): void {
+function propagate(element: Element): void {
 	const parts = grimoire<$ShdwGrimoire>(
 		element as GrimoireElement,
 		$SHDW_GRIMOIRE_SYMBOL,

@@ -122,3 +122,16 @@ test('$shdw hex bewitches the element (all hexes guarantee this)', () => {
 		'element should be bewitched after $shdw hex',
 	);
 });
+
+test('$shdw hex promotes a declarative shadow root and tracks its parts', () => {
+	const el = document.createElement('div');
+	const template = document.createElement('template');
+	template.setAttribute('shadowrootmode', 'open');
+	template.innerHTML = '<button part="btn">click</button>';
+	el.appendChild(template);
+
+	const root = $shdw(el);
+	assert(root instanceof ShadowRoot);
+	assertEquals(root.querySelector('button')?.textContent, 'click');
+	assert($shdw.parts(el)!.has('btn'));
+});
