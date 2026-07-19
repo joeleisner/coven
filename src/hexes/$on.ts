@@ -7,6 +7,8 @@
 import { $bewitch } from './$bewitch.ts';
 import { $on as $onCharm, type $OnOptions } from '../charms/$on.ts';
 
+export type { $OnOptions };
+
 /**
  * Type-safe `addEventListener` hex. Sources its cleanup signal from
  * `$bewitch` automatically — no `signal` option is accepted.
