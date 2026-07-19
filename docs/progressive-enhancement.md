@@ -1,8 +1,10 @@
 # Progressive enhancement
 
-Coven hexes work on any `HTMLElement`. You don't need to extend
-`Familiar`. This means you can adopt Coven one helper at a time inside
-an existing component library.
+Most Coven hexes work on any `Element` (not just `HTMLElement` — an
+`SVGElement` works too). `$bewitch`, `$on`, and `$soul` reach further
+still and accept any `EventTarget`, including `document` and `window`.
+You don't need to extend `Familiar`. This means you can adopt Coven
+one helper at a time inside an existing component library.
 
 ## The soul pattern
 
