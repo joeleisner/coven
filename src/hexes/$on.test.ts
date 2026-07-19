@@ -58,12 +58,13 @@ test('$on hex does not write its own grimoire slot', () => {
 
 test('$on hex accepts window as a target (EventTarget widening)', () => {
 	let count = 0;
-	$on(window, {
+	const target = window;
+	$on(target, {
 		type: 'coven-test-window-event',
 		callback: () => {
 			count++;
 		},
 	});
-	window.dispatchEvent(new Event('coven-test-window-event'));
+	target.dispatchEvent(new Event('coven-test-window-event'));
 	assertEquals(count, 1);
 });
