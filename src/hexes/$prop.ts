@@ -64,7 +64,7 @@ export type $PropConfig<TValue = unknown> = {
 export function $prop<
 	TValue = unknown,
 >(
-	element: HTMLElement,
+	element: Element,
 	{
 		name,
 		value: defaultValue,
@@ -115,7 +115,7 @@ export function $prop<
 /**
  * Returns the names of every property bound to the element via $prop.
  */
-$prop.list = (element: HTMLElement): string[] => {
+$prop.list = (element: Element): string[] => {
 	const store = grimoire<$PropGrimoire>(
 		element as GrimoireElement,
 		$PROP_GRIMOIRE_SYMBOL,
@@ -128,7 +128,7 @@ $prop.list = (element: HTMLElement): string[] => {
  * undefined if no such property exists.
  */
 $prop.readonly = (
-	element: HTMLElement,
+	element: Element,
 	name: string,
 ): boolean | undefined => {
 	const store = grimoire<$PropGrimoire>(

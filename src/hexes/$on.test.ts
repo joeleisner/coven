@@ -55,3 +55,16 @@ test('$on hex does not write its own grimoire slot', () => {
 		`expected no $on slot; got ${symbols.map((s) => s.description).join(', ')}`,
 	);
 });
+
+test('$on hex accepts window as a target (EventTarget widening)', () => {
+	let count = 0;
+	const target = window;
+	$on(target, {
+		type: 'coven-test-window-event',
+		callback: () => {
+			count++;
+		},
+	});
+	target.dispatchEvent(new Event('coven-test-window-event'));
+	assertEquals(count, 1);
+});

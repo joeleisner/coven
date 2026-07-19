@@ -35,3 +35,56 @@ test('$shdw charm does not write to the grimoire', () => {
 		`expected no $shdw slot; got ${symbols.map((s) => s.description).join(', ')}`,
 	);
 });
+
+test('$shdw charm promotes an orphaned declarative shadow template (open mode)', () => {
+	const el = document.createElement('div');
+	const template = document.createElement('template');
+	template.setAttribute('shadowrootmode', 'open');
+	template.innerHTML = '<button>click</button>';
+	el.appendChild(template);
+
+	const root = $shdw(el);
+	assert(root instanceof ShadowRoot);
+	assertEquals(root.mode, 'open');
+	assertEquals(root.querySelector('button')?.textContent, 'click');
+	assertEquals(
+		el.querySelector('template'),
+		null,
+		'the declarative template should be removed after promotion',
+	);
+});
+
+test('$shdw charm promotes a closed-mode declarative shadow template', () => {
+	const el = document.createElement('div');
+	const template = document.createElement('template');
+	template.setAttribute('shadowrootmode', 'closed');
+	template.innerHTML = '<i>hidden</i>';
+	el.appendChild(template);
+
+	const root = $shdw(el);
+	assertEquals(root.mode, 'closed');
+	assertEquals(root.querySelector('i')?.textContent, 'hidden');
+	assertEquals(
+		el.shadowRoot,
+		null,
+		'closed shadow roots are not exposed via the public getter',
+	);
+});
+
+test("$shdw charm falls back to today's behavior when there is no declarative template", () => {
+	const el = document.createElement('div');
+	const root = $shdw(el, '<span>x</span>');
+	assertEquals(root.mode, 'open');
+	assertEquals(root.querySelector('span')?.textContent, 'x');
+});
+
+test('$shdw charm prefers an explicit html argument over a leftover declarative template', () => {
+	const el = document.createElement('div');
+	const template = document.createElement('template');
+	template.setAttribute('shadowrootmode', 'open');
+	template.innerHTML = '<button>from template</button>';
+	el.appendChild(template);
+
+	const root = $shdw(el, '<span>from html arg</span>');
+	assertEquals(root.querySelector('span')?.textContent, 'from html arg');
+});

@@ -53,7 +53,7 @@ export type $MorphConfig = ResizeObserverOptions & {
  * ```
  */
 export function $morph(
-	element: HTMLElement,
+	element: Element,
 	{
 		callback,
 		...init
@@ -88,7 +88,7 @@ export function $morph(
  * @param element - The element to look up.
  * @returns The `Set` of observers, or `undefined`.
  */
-$morph.observers = (element: HTMLElement): Set<ResizeObserver> | undefined =>
+$morph.observers = (element: Element): Set<ResizeObserver> | undefined =>
 	grimoire<$MorphGrimoire>(element, $MORPH_GRIMOIRE_SYMBOL).observers;
 
 /**
@@ -97,7 +97,7 @@ $morph.observers = (element: HTMLElement): Set<ResizeObserver> | undefined =>
  *
  * @param element - The element whose observers should be disconnected.
  */
-$morph.disconnect = (element: HTMLElement): void => {
+$morph.disconnect = (element: Element): void => {
 	const store = grimoire<$MorphGrimoire>(element, $MORPH_GRIMOIRE_SYMBOL);
 	store.observers?.forEach((o) => o.disconnect());
 	store.observers = undefined;

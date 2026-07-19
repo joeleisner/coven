@@ -4,6 +4,7 @@ const window = new Window();
 
 const globals = [
 	'document',
+	'window',
 	'HTMLElement',
 	'HTMLTemplateElement',
 	'customElements',

@@ -37,8 +37,11 @@ hexes.$soul(button, {
 // When removing from the DOM: hexes.$bewitch.abort(button)
 ```
 
-Coven hexes work on any HTMLElement. If you only want a couple of
-helpers and don't want to rewrite your components, you can.
+Most Coven hexes work on any `Element` (not just `HTMLElement` — an
+`SVGElement` works too), and `$bewitch`, `$on`, and `$soul` reach
+further still and accept any `EventTarget`, including `document` and
+`window`. If you only want a couple of helpers and don't want to
+rewrite your components, you can.
 
 ## Quick example (using `Familiar`)
 
@@ -59,7 +62,7 @@ class Counter extends Familiar {
 			name: 'count',
 			value: 0,
 			callback: (v) => {
-				hexes.$shdw.root(this)!.querySelector('span')!.textContent = String(v);
+				$shdw.root(this)!.querySelector('span')!.textContent = String(v);
 			},
 		});
 	}

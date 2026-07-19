@@ -22,7 +22,7 @@
  * ```
  */
 export function $wake(
-	_element: HTMLElement,
+	_element: EventTarget,
 	callback: () => void,
 	signal?: AbortSignal,
 ): void {

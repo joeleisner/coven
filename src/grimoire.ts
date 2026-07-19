@@ -17,10 +17,12 @@ export type GrimoireCarrier = {
 };
 
 /**
- * A DOM node augmented with an internal grimoire — the per-node bag
- * of state every hex uses to stash its bookkeeping.
+ * An `EventTarget` (an element, the document, the window, a shadow
+ * root, or any other object implementing `EventTarget`) augmented
+ * with an internal grimoire — the per-target bag of state every hex
+ * uses to stash its bookkeeping.
  */
-export type GrimoireElement = Node & GrimoireCarrier;
+export type GrimoireElement = EventTarget & GrimoireCarrier;
 
 function readSlot<TInterface extends Record<string, unknown>>(
 	carrier: GrimoireCarrier,

@@ -28,3 +28,9 @@ test('$scry.disconnect(element) disconnects all observers', () => {
 	assert(disconnected);
 	assertEquals($scry.observers(el), undefined);
 });
+
+test('$scry accepts an SVGElement target (Element widening)', () => {
+	const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	const obs = $scry(el, { callback: () => {} });
+	assert(obs instanceof IntersectionObserver);
+});

@@ -28,7 +28,7 @@ const defaultEmitOptions: EventInit = {
 export function $emit<
 	TDetail extends unknown | never = never,
 >(
-	element: HTMLElement,
+	element: Element,
 	options: (EventInit | CustomEventInit<TDetail>) & { name?: string } = {},
 ): boolean {
 	const tag = element.tagName.toLowerCase();

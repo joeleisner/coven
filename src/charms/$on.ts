@@ -50,7 +50,7 @@ export function $on<
 	TDetail extends unknown | never = never,
 	TEvent = [TDetail] extends [never] ? Event : CustomEvent<TDetail>,
 >(
-	element: HTMLElement,
+	element: EventTarget,
 	{
 		type,
 		callback,

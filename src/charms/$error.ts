@@ -5,7 +5,7 @@
 export const COVEN_ERROR_NAME = 'CovenError' as const;
 
 type CovenErrorOptions = ErrorOptions & {
-	prototype?: HTMLElement;
+	prototype?: Element;
 };
 
 class CovenError extends Error {
@@ -42,7 +42,7 @@ class CovenError extends Error {
  * ```
  */
 export function $error(
-	component: HTMLElement,
+	component: Element,
 	message: string,
 ): never {
 	message = `[${component.tagName.toLowerCase()}]: ${message}`;

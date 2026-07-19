@@ -95,3 +95,9 @@ test('$bewitch.renew converts an adopted bewitch into an owned one', () => {
 	$bewitch.abort(el);
 	assert(renewed.aborted, 'newly-owned signal aborts on $bewitch.abort');
 });
+
+test('$bewitch accepts window (EventTarget widening)', () => {
+	const signal = $bewitch(window);
+	assert(signal instanceof AbortSignal);
+	assert(!signal.aborted);
+});
